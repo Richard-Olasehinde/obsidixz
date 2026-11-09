@@ -74,6 +74,10 @@ browser zoom), `shots`, `all`.
 - **Commercial links use HTTP.** Its HTTPS certificate was pending at the 2026-11-09 handoff and
   could not be re-checked from the sandbox. The site says so plainly. Switch in one place —
   see `DEPLOYMENT.md` §5.
+- **Assertions on styling must wait for CSS.** `domcontentloaded` does not wait for stylesheets, and
+  the hamburger's hidden state is a CSS rule (`html:not(.js) .menu-btn`). The no-JS mode consequently
+  calls `waitForStyles()` before reading computed styles; a premature read made CI flaky. Any new
+  style-dependent assertion should do the same.
 - **No analytics, forms, cookies or third-party embeds.** Keep it that way unless the privacy notice
   is updated at the same time.
 
@@ -99,7 +103,3 @@ browser zoom), `shots`, `all`.
 - Do not modify `obsidixz-estate` or `obsidixz-commercial`, their deployments or their DNS.
 - Do not invent legal entities, founding dates, clients, awards, revenue or an office.
 - Do not replace the supplied logo artwork with re-typed text or a redrawn emblem.
-
-- Rendered checks read computed styles in no-JS mode: they now call `waitForStyles()` first, because
-  `domcontentloaded` does not wait for CSS and the hamburger's hidden state is a CSS rule. If you add a
-  new assertion that depends on styling, wait for stylesheets the same way.

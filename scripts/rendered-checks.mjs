@@ -90,6 +90,27 @@ const newPage = async (width, height = 900, extra = {}) => {
   return page;
 };
 
+/**
+ * Waits until every <link rel="stylesheet"> has been fetched and parsed.
+ *
+ * `domcontentloaded` does not wait for stylesheets, so computed styles read at that point can come
+ * from unstyled markup. That made a no-JS assertion flaky on slow runners: the hamburger is hidden
+ * only by the `html:not(.js) .menu-btn` rule, so before the CSS was applied it measured `inline-grid`
+ * instead of `none`. Polling from Node, because page-side timers do not run with JavaScript disabled.
+ */
+async function waitForStyles(page, timeoutMs = 30_000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const ready = await page.evaluate(() => {
+      const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
+      return links.length > 0 && links.every((link) => Boolean(link.sheet));
+    });
+    if (ready) return true;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  return false;
+}
+
 /** Scrolls the page so lazy images load, then waits for every image to finish. */
 async function settle(page) {
   await page.evaluate(async () => {
@@ -399,6 +420,7 @@ async function runNoJs() {
   const page = await newPage(390, 900);
   await page.setJavaScriptEnabled(false);
   await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded' });
+  if (!(await waitForStyles(page))) fail('no-js: stylesheet did not finish loading');
   const report = await page.evaluate(() => {
     const panel = document.querySelector('#mobile-menu');
     const links = Array.from(panel?.querySelectorAll('a[href]') ?? []).map((a) => a.textContent?.trim());
@@ -428,6 +450,7 @@ async function runNoJs() {
   const desktop = await newPage(1280, 900);
   await desktop.setJavaScriptEnabled(false);
   await desktop.goto(`${BASE}/`, { waitUntil: 'domcontentloaded' });
+  if (!(await waitForStyles(desktop))) fail('no-js: stylesheet did not finish loading (desktop)');
   const desktopPanel = await desktop.evaluate(() =>
     getComputedStyle(document.querySelector('#mobile-menu')).display);
   if (desktopPanel !== 'none') fail('no-js: duplicate menu panel visible at desktop width');

@@ -66,12 +66,24 @@ Runs observed on this branch:
 | [42693467644](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693467644) | push + PR triggers | rendered job ✗ once |
 | [42693965330](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693965330) | pull request only | both jobs ✓ |
 
-The rendered job failed twice, each time in a run that was a duplicate of a passing run at the same
-commit. The failing step's log could not be retrieved from this sandbox (the log download endpoint is
-outside the allowed hosts; only the "process completed with exit code 1" annotation was available),
-so **the cause is unconfirmed** — this is recorded as an unexplained intermittent failure, not as a
-passing result. Because the same commit passed in the sibling run, the assertions themselves are not
-implicated, but that is inference, not evidence.
+The rendered job failed three times intermittently. The job log itself is not retrievable from this
+sandbox (the log download host is outside the allowed network), but after the workflow was changed to
+re-emit failing lines as `::error::` annotations, the third failure identified itself:
+
+```
+FAIL  no-js: hamburger toggle still visible
+```
+
+**Cause (confirmed, and it was the harness, not the site):** the no-JS mode navigated with
+`waitUntil: 'domcontentloaded'`, which does not wait for stylesheets. The hamburger is hidden only by
+the `html:not(.js) .menu-btn` CSS rule, so on a slow runner `getComputedStyle` was read before the
+stylesheet applied and returned `inline-grid` instead of `none`. The first two failures were almost
+certainly the same race, but their logs are unavailable, so that is stated as probable rather than
+proven. The no-JS **behaviour of the site is correct** — it was the measurement that was premature.
+
+Fix: `waitForStyles()` polls (from Node, since page timers do not run with JavaScript disabled) until
+every `<link rel="stylesheet">` reports a parsed `sheet`, and fails explicitly if that never happens.
+Full suite re-run after the change: `all` → 0 failures.
 
 Mitigations applied (none of which weaken an assertion):
 

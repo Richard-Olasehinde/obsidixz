@@ -13,6 +13,8 @@
   --royal-pale: #e8eef7;
   --gold: #b47745;
   --gold-soft: #d3a175;
+  /* Darker gold for small numerals on light backgrounds (5.2:1 on white). */
+  --gold-ink: #9a5f34;
   --black: #111111;
   --charcoal: #292d32;
   --white: #ffffff;
@@ -21,7 +23,7 @@
   /* Neutrals */
   --ink: #3a4048;
   --slate: #59616b;
-  --muted: #767f8a;
+  --muted: #66707a;
   --line: #e2e5e9;
   --line-strong: #d2d6dc;
 
@@ -1146,7 +1148,7 @@ html:not(.js) .mnav__close {
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--gold);
+  color: var(--gold-ink);
   order: -1;
 }
 
@@ -1893,7 +1895,7 @@ html:not(.js) .mnav__close {
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--gold);
+  color: var(--gold-ink);
 }
 
 .values p {

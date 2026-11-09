@@ -46,6 +46,33 @@ This is the single authoritative status file. Anything contradicted here is supe
 Not run: Lighthouse, axe, real-browser zoom automation, screen-reader session, cross-browser engine
 testing. These are declared as limits rather than claimed as passes.
 
+## Contrast and focus measurements
+
+Measured from the shipped tokens (WCAG 2.1 relative luminance, computed in `node`). Two tokens were
+darkened during the audit because small text failed 4.5:1: `--muted` (#767F8A → **#66707A**) and a
+new `--gold-ink` (#9A5F34) for small gold numerals on light backgrounds. Brand gold (#B47745) is
+still used for decorative squares, rules and for text on black, where it measures 5.09:1.
+
+| Pair | Ratio | Use |
+| --- | --- | --- |
+| Royal `#315C9B` on white | 6.70:1 | eyebrows, links, addresses |
+| Royal-deep on white | 9.74:1 | copy-status text |
+| Slate `#59616B` on white / light grey | 6.27:1 / 5.75:1 | body copy |
+| Muted `#66707A` on white / light grey | 5.04:1 / 4.62:1 | captions, labels, notes |
+| Charcoal `#292D32` on white | 13.86:1 | headings |
+| Gold-ink `#9A5F34` on white / light grey | 5.17:1 / 4.74:1 | small numerals |
+| Gold `#B47745` on black | 5.09:1 | hero second line, accents on dark |
+| Gold-soft `#D3A175` on black | 8.20:1 | menu numbers, dark accents |
+| Royal-soft `#8FB2DE` on black | 8.62:1 | inverse eyebrows, menu links |
+| `#E9ECF0` on black | 15.93:1 | dark-section body |
+| `#A8B0BA` on black | 8.62:1 | dark-section secondary |
+| `#8E97A2` on black (footer small) | 6.38:1 | footer meta |
+| White on royal (primary button) | 6.70:1 | buttons |
+
+Keyboard focus: pressing Tab produced a `2px solid rgb(31, 76, 140)` outline on the skip link, the
+logo link and each nav item, with `:focus-visible` matching (measured in the browser, not assumed).
+On dark surfaces the outline switches to `#A9C6EC`.
+
 ## Screenshots (evidence, not approval)
 
 Produced from `npm run preview` (the production `dist/`) with the packaged Chromium at the commit

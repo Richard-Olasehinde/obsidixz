@@ -48,25 +48,42 @@ testing. These are declared as limits rather than claimed as passes.
 
 ## Continuous integration (GitHub Actions)
 
-`.github/workflows/ci.yml` runs on every pull request and on pushes to any branch except `main`.
-Two jobs: **Build and structural checks** (`npm ci`, `astro check`, `npm run build`, `npm run verify`)
-and **Rendered, interaction and no-JS checks** (installs Chromium system libraries, serves
-`npm run preview -- --port 4321`, waits for the port, then runs `check`, `interact`, `nojs`, `zoom`).
+`.github/workflows/ci.yml` runs on every pull request and on manual dispatch. Two jobs:
+**Build and structural checks** (`npm ci`, `astro check`, `npm run build`, `npm run verify`) and
+**Rendered, interaction and no-JS checks** (installs Chromium system libraries, serves
+`npm run preview -- --port 4321`, waits for the port, then runs `check`, `interact`, `nojs`, `zoom`
+one mode at a time).
 
-Observed on the open pull request:
+Runs observed on this branch:
 
-| Run | Job | Result |
+| Run | Config | Result |
 | --- | --- | --- |
-| [42691297433](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691297433) | both (commit `d737689`) | build ✓, rendered ✓ |
-| [42691287195](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691287195) | both (commit `d737689`) | build ✓, rendered ✓ |
-| [42691190533](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691190533) | both (commit `20eb426`) | build ✓, rendered ✓ |
-| [42691176814](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691176814) | rendered (commit `20eb426`) | ✗ once — same commit passed in the run above |
+| [42691287195](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691287195) | push + PR triggers | both jobs ✓ |
+| [42691297433](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691297433) | push + PR triggers | both jobs ✓ |
+| [42691190533](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691190533) | push + PR triggers | both jobs ✓ |
+| [42691176814](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691176814) | push + PR triggers | rendered job ✗ once |
+| [42693453485](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693453485) | push + PR triggers | both jobs ✓ |
+| [42693467644](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693467644) | push + PR triggers | rendered job ✗ once |
+| [42693965330](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693965330) | pull request only | both jobs ✓ |
 
-The single failure was in the rendered step of a duplicate run triggered at the same commit; the
-job log was no longer retrievable, so the cause is **not** confirmed. Recorded as an unexplained
-one-off, not a passing result. To reduce that class of flake the browser launch now retries up to
-three times with a 120 s launch timeout and a 180 s protocol timeout, which does not change what is
-asserted. Local suite re-run after the change: `all` → 0 failures.
+The rendered job failed twice, each time in a run that was a duplicate of a passing run at the same
+commit. The failing step's log could not be retrieved from this sandbox (the log download endpoint is
+outside the allowed hosts; only the "process completed with exit code 1" annotation was available),
+so **the cause is unconfirmed** — this is recorded as an unexplained intermittent failure, not as a
+passing result. Because the same commit passed in the sibling run, the assertions themselves are not
+implicated, but that is inference, not evidence.
+
+Mitigations applied (none of which weaken an assertion):
+
+- CI now runs **once per pull request** instead of once per branch push plus once per pull request, so
+  two identical Chromium suites no longer compete on the runner for the same commit;
+- the Chromium launch retries up to three times (120 s launch timeout, 180 s protocol timeout);
+- each rendered mode runs separately, so one failure cannot mask the others, and every `FAIL` /
+  launch / `net::ERR` line is re-emitted as a `::error::` annotation, which is readable even when the
+  full job log is not;
+- `actions/checkout` and `actions/setup-node` moved to v5 for the Node 20 runner deprecation.
+
+Latest run at the head commit: both jobs green.
 
 ## Contrast and focus measurements
 

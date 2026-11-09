@@ -1,10 +1,11 @@
 name: Checks
 
-# Feature-branch and pull-request checks. This workflow never deploys.
+# Pull-request and manual checks. This workflow never deploys; `deploy.yml` owns `main`.
+# Deliberately not run on every branch push: a pull request already opens the run, and two
+# identical Chromium suites at the same commit compete for the same runner resources.
 on:
   pull_request:
-  push:
-    branches-ignore: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,9 +15,9 @@ jobs:
     name: Build and structural checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -31,23 +32,23 @@ jobs:
     runs-on: ubuntu-latest
     needs: structural
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
 
       - run: npm ci
 
-      # System libraries required by the bundled Chromium binary.
+      # System libraries required by the bundled Chromium binary. The libasound2 package was
+      # renamed libasound2t64 on Ubuntu 24.04, so try the newer name first.
       - name: Install Chromium dependencies
         run: |
           sudo apt-get update
           PACKAGES="libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
             libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
             libgbm1 libpango-1.0-0 libcairo2"
-          # libasound2 was renamed libasound2t64 on Ubuntu 24.04; accept either.
           sudo apt-get install -y --no-install-recommends $PACKAGES libasound2t64 \
             || sudo apt-get install -y --no-install-recommends $PACKAGES libasound2
 
@@ -58,17 +59,34 @@ jobs:
           npm run preview -- --port 4321 &
           for i in $(seq 1 60); do
             if curl -sf -o /dev/null http://127.0.0.1:4321/; then
-              echo "preview ready"; exit 0
+              echo "preview ready"
+              exit 0
             fi
             sleep 1
           done
-          echo "preview did not start"; exit 1
+          echo "preview did not start"
+          exit 1
 
+      # Each mode runs on its own so one failure cannot hide the others. Output is teed to a log and
+      # the offending lines are re-emitted as ::error:: annotations, because the full job log is not
+      # always retrievable through the API.
       - name: Rendered checks
         env:
           BASE_URL: http://127.0.0.1:4321
         run: |
-          node scripts/rendered-checks.mjs check
-          node scripts/rendered-checks.mjs interact
-          node scripts/rendered-checks.mjs nojs
-          node scripts/rendered-checks.mjs zoom
+          set -o pipefail
+          echo "node $(node --version) on $(lsb_release -ds 2>/dev/null || uname -sr)"
+          status=0
+          : > rendered-checks.log
+          for mode in check interact nojs zoom; do
+            echo "=== mode: ${mode} ==="
+            node scripts/rendered-checks.mjs "${mode}" 2>&1 | tee -a rendered-checks.log || status=1
+          done
+          if [ "$status" -ne 0 ]; then
+            echo "::error::Rendered checks failed. Offending lines follow as annotations."
+            grep -E "^(FAIL|launch attempt)|Error:|TimeoutError|Protocol error|net::ERR" rendered-checks.log \
+              | head -n 10 \
+              | while IFS= read -r line; do echo "::error::${line}"; done
+            exit 1
+          fi
+          echo "all rendered modes passed"

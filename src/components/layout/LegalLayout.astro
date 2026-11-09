@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type TocItem = { href: string; label: string };
+
+type Props = {
+  title: string;
+  description: string;
+  heading: string;
+  lede: string;
+  updated: string;
+  toc: TocItem[];
+};
+
+const { title, description, heading, lede, updated, toc } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="page-head">
+    <div class="wrap">
+      <div class="page-head__inner">
+        <div>
+          <p class="eyebrow">Policy</p>
+          <h1>{heading}</h1>
+        </div>
+        <p class="lede">{lede}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="legal-layout">
+        <div class="prose">
+          <div class="prose__meta">
+            <strong>Last updated: {updated}</strong>
+            Applies to the Obsidixz parent website at obsidixz.pp.ua. Questions about this page:
+            <a href="mailto:obsidixz@outlook.com">obsidixz@outlook.com</a>.
+          </div>
+          <slot />
+        </div>
+
+        <aside class="legal-aside" aria-label="On this page">
+          <h2>On this page</h2>
+          <ul>
+            {toc.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

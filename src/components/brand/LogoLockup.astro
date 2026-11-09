@@ -1,0 +1,32 @@
+---
+/**
+ * Approved parent artwork — Concept 02 "The Interlock".
+ *
+ * The supplied PNG is rendered at its own aspect ratio (931 × 785) and is never
+ * cropped, recoloured or redrawn here. Width comes from CSS so the three
+ * approved website sizes (80 / 96 / 112 px) are the only ones used.
+ *
+ * The mark always sits inside a labelled link or beside the word "Obsidixz" in
+ * text, so the image itself is decorative (alt="") to avoid duplicate reading.
+ */
+type Props = {
+  tone?: 'on-light' | 'on-dark';
+  class?: string;
+};
+
+const { tone = 'on-light', class: className } = Astro.props;
+const src =
+  tone === 'on-dark'
+    ? '/brand/obsidixz-parent-logo-on-dark.png'
+    : '/brand/obsidixz-parent-logo-on-light.png';
+---
+
+<img
+  src={src}
+  alt=""
+  width="931"
+  height="785"
+  decoding="async"
+  class={className}
+  data-tone={tone}
+/>

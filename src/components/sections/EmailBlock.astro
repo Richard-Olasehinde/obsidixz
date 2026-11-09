@@ -1,0 +1,103 @@
+---
+import Arrow from '../ui/Arrow.astro';
+import { emailCopy } from '../../data/site';
+
+type Props = {
+  label: string;
+  address: string;
+  href: string;
+  ctaLabel: string;
+  copy?: boolean;
+  plain?: boolean;
+  testId?: string;
+};
+
+const { label, address, href, ctaLabel, copy = false, plain = false, testId } = Astro.props;
+---
+
+<div class:list={['email-block', plain && 'email-block--plain']} data-email-block>
+  <p class="email-block__label">{label}</p>
+  <a
+    class="email-block__address"
+    href={href}
+    data-email-link
+    data-testid={testId ? `${testId}-address` : undefined}>{address}</a>
+
+  <div class="email-block__actions">
+    <a class="btn btn--primary" href={href} data-testid={testId}>
+      {ctaLabel}
+      <Arrow />
+    </a>
+    {
+      copy && (
+        <button
+          class="btn btn--outline"
+          type="button"
+          data-copy-email
+          data-copy-address={address}
+          data-testid={testId ? `${testId}-copy` : 'copy-email'}
+          hidden
+        >
+          Copy email address
+        </button>
+      )
+    }
+  </div>
+
+  <p class="email-block__status" role="status" aria-live="polite" data-copy-status></p>
+  <p class="email-block__helper">{emailCopy.opensApp}</p>
+  <p class="email-block__helper email-block__helper--caution">{emailCopy.sensitive}</p>
+</div>
+
+<script>
+  const COPY_SUCCESS = 'Email address copied';
+  const COPY_FAILURE = 'Copy unavailable. Select and copy the email address above.';
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-copy-email]');
+
+  const legacyCopy = (text: string) => {
+    try {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.top = '-1000px';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(field);
+      return ok;
+    } catch {
+      return false;
+    }
+  };
+
+  buttons.forEach((button) => {
+    // The control is useless without JS, so it is revealed only once it can work.
+    button.hidden = false;
+
+    button.addEventListener('click', async () => {
+      const address = button.getAttribute('data-copy-address') ?? '';
+      const status = button
+        .closest('[data-email-block]')
+        ?.querySelector<HTMLElement>('[data-copy-status]');
+      let copied = false;
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(address);
+          copied = true;
+        }
+      } catch {
+        copied = false;
+      }
+
+      if (!copied) copied = legacyCopy(address);
+
+      if (!status) return;
+      status.textContent = copied ? COPY_SUCCESS : COPY_FAILURE;
+      status.dataset.state = copied ? 'success' : 'error';
+    });
+  });
+</script>

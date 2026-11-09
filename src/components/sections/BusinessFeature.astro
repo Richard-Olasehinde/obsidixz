@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import Arrow from '../ui/Arrow.astro';
+import type { Business } from '../../data/site';
+
+type Props = {
+  business: Business;
+  image: ImageMetadata;
+  alt: string;
+  caption: string;
+  reverse?: boolean;
+  heading?: 'h2' | 'h3';
+  showBody?: boolean;
+};
+
+const {
+  business,
+  image,
+  alt,
+  caption,
+  reverse = false,
+  heading = 'h3',
+  showBody = true,
+} = Astro.props;
+
+const Heading = heading;
+const emailHref = business.email ? `mailto:${business.email}?subject=${encodeURIComponent(`${business.name} — Website enquiry`)}` : undefined;
+---
+
+<article class:list={['biz-feature', reverse && 'biz-feature--reverse']} id={business.id} data-testid={`biz-${business.id}`}>
+  <figure class="biz-feature__media">
+    <span class="biz-feature__plate">{business.index} · {business.kicker}</span>
+    <Image
+      src={image}
+      alt={alt}
+      widths={[520, 720, 960]}
+      sizes="(min-width: 62rem) 46vw, 100vw"
+      format="webp"
+      quality={78}
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption class="caption">{caption}</figcaption>
+  </figure>
+
+  <div class="biz-feature__body">
+    <p class="eyebrow">Business {business.index}</p>
+    <Heading class="biz-feature__name">{business.name}</Heading>
+    <p class="biz-feature__summary">{business.summary}</p>
+
+    {
+      showBody &&
+      business.body.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))
+    }
+
+    <dl class="biz-facts">
+      {
+        business.facts.map((fact) => (
+          <div>
+            <dt>{fact.term}</dt>
+            <dd>{fact.detail}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="biz-scope"><strong>Scope.</strong> {business.scope}</p>
+
+    {
+      business.url && business.urlLabel && (
+        <div class="biz-actions">
+          <a class="btn btn--primary" href={business.url} rel="noopener">
+            {business.urlLabel}
+            <Arrow />
+          </a>
+          {emailHref && business.email && (
+            <a class="email-link" href={emailHref}>{business.email}</a>
+          )}
+        </div>
+      )
+    }
+
+    {
+      business.urlInsecure && business.url && (
+        <p class="biz-url-note">
+          The Commercial site is currently served over plain HTTP while its HTTPS certificate is
+          completed. Email is an alternative route.
+        </p>
+      )
+    }
+  </div>
+</article>

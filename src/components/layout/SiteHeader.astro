@@ -1,0 +1,210 @@
+---
+import LogoLockup from '../brand/LogoLockup.astro';
+import { primaryNav, businesses, emails, GENERAL_MAILTO } from '../../data/site';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => {
+  const target = href.replace(/\/+$/, '') || '/';
+  return target === '/' ? path === '/' : path === target || path.startsWith(`${target}/`);
+};
+---
+
+<header class="header">
+  <div class="header__inner wrap" id="header-inner">
+    <a class="brand" href="/" aria-label="Obsidixz — home">
+      <LogoLockup />
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        {
+          primaryNav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary header__cta" href={GENERAL_MAILTO} data-testid="header-email">
+      Email Obsidixz
+    </a>
+
+    <button
+      class="menu-btn"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+      data-testid="menu-toggle"
+    >
+      <span class="menu-btn__lines" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+  </div>
+
+  {/*
+    Expanded menu. Rendered without dialog semantics so that, with JavaScript
+    unavailable, it degrades to a static navigation block (see global.css).
+    The script below adds role="dialog"/aria-modal and background isolation only
+    while the menu is open.
+  */}
+  <div class="mnav" id="mobile-menu" data-open="false">
+    <div class="mnav__top wrap">
+      <a class="brand" href="/" aria-label="Obsidixz — home">
+        <LogoLockup tone="on-dark" />
+      </a>
+      <button class="mnav__close" type="button" aria-label="Close menu" data-testid="menu-close">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M4 4 16 16M16 4 4 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mnav__nav wrap" aria-label="Mobile">
+      <ul class="mnav__links">
+        {
+          primaryNav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                <span>{item.label}</span>
+                <small aria-hidden="true">0{primaryNav.indexOf(item) + 1}</small>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="mnav__foot wrap">
+      <div class="mnav__biz">
+        <p class="mnav__label">Businesses</p>
+        <ul>
+          {
+            businesses.map((business) => (
+              <li>
+                <a href={business.url ?? `/businesses/#${business.id}`}>
+                  {business.name}
+                  <span aria-hidden="true">{business.kicker}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <a class="btn btn--on-dark" href={GENERAL_MAILTO}>Email Obsidixz</a>
+      <p>
+        Or write directly to
+        <a href={GENERAL_MAILTO.replace(/\?.*$/, '')}>{emails.general}</a>
+      </p>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-testid="menu-toggle"]');
+  const panel = document.getElementById('mobile-menu');
+  const closeBtn = panel?.querySelector<HTMLButtonElement>('[data-testid="menu-close"]');
+  const headerInner = document.getElementById('header-inner');
+  const main = document.getElementById('main');
+  const footer = document.getElementById('site-footer');
+  const skip = document.querySelector<HTMLAnchorElement>('.skip-link');
+
+  const isolate = (on: boolean) => {
+    for (const el of [headerInner, main, footer, skip]) {
+      if (!el) continue;
+      if (on) el.setAttribute('inert', '');
+      else el.removeAttribute('inert');
+    }
+  };
+
+  const focusables = () =>
+    panel
+      ? Array.from(
+          panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+        ).filter((el) => el.offsetParent !== null)
+      : [];
+
+  let lastFocus: HTMLElement | null = null;
+
+  const openMenu = () => {
+    if (!panel || !toggle) return;
+    lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    panel.dataset.open = 'true';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', 'Site menu');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    document.body.classList.add('menu-open');
+    isolate(true);
+    (closeBtn ?? focusables()[0])?.focus();
+  };
+
+  const closeMenu = (restoreFocus = true) => {
+    if (!panel || !toggle) return;
+    panel.dataset.open = 'false';
+    panel.removeAttribute('role');
+    panel.removeAttribute('aria-modal');
+    panel.removeAttribute('aria-label');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    document.body.classList.remove('menu-open');
+    isolate(false);
+    if (restoreFocus) (lastFocus ?? toggle).focus();
+  };
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = panel?.dataset.open === 'true';
+    if (isOpen) closeMenu();
+    else openMenu();
+  });
+
+  closeBtn?.addEventListener('click', () => closeMenu());
+
+  panel?.querySelectorAll('a[href]').forEach((link) => {
+    link.addEventListener('click', () => closeMenu(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (panel?.dataset.open !== 'true') return;
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeMenu();
+      return;
+    }
+
+    if (event.key !== 'Tab') return;
+    const items = focusables();
+    if (items.length === 0) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !panel.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  // The menu is a mobile-only surface: close it when the desktop nav appears.
+  const desktop = window.matchMedia('(min-width: 64rem)');
+  desktop.addEventListener('change', (event) => {
+    if (event.matches && panel?.dataset.open === 'true') closeMenu(false);
+  });
+
+  // Keep the stored toggle reference fresh if the user resizes with the menu open.
+  window.addEventListener('pageshow', () => {
+    if (panel?.dataset.open === 'true') closeMenu(false);
+  });
+</script>

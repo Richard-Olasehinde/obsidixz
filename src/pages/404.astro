@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Arrow from '../components/ui/Arrow.astro';
+import { businessById } from '../data/site';
+
+const realEstate = businessById('real-estate');
+const commercial = businessById('commercial');
+---
+
+<BaseLayout
+  title="Page not found | Obsidixz"
+  description="The page you asked for is not on the Obsidixz website. Use the links here to continue."
+  noindex
+>
+  <section class="notfound">
+    <div class="wrap">
+      <div class="notfound__inner">
+        <p class="eyebrow">Error 404</p>
+        <h1>This page isn’t here.</h1>
+        <p>
+          The address may have changed, or the link may be mistyped. The main routes are below, and
+          the business websites are listed at the end.
+        </p>
+
+        <div class="notfound__links">
+          <a class="btn btn--primary" href="/">Back to home <Arrow /></a>
+          <a class="btn btn--outline" href="/businesses/">Our Businesses</a>
+          <a class="btn btn--outline" href="/contact/">Contact</a>
+        </div>
+
+        <p class="caption" style="margin-top:2rem;">
+          Looking for a business site?
+          <a href={realEstate.url} rel="noopener" style="color:var(--royal);">Obsidixz Real Estate</a>
+          ·
+          <a href={commercial.url} rel="noopener" style="color:var(--royal);">Obsidixz Commercial</a>
+          — Obsidixz Game Studio does not have a public site yet.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

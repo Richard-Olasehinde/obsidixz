@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Arrow from '../components/ui/Arrow.astro';
+import BrandArchitecture from '../components/sections/BrandArchitecture.astro';
+import { site, values, GENERAL_MAILTO } from '../data/site';
+---
+
+<BaseLayout
+  title="About Obsidixz | Parent Organisation"
+  description="What Obsidixz is, how the parent relates to its businesses, and the mission, vision and values the organisation is built on."
+>
+  <section class="page-head">
+    <div class="wrap">
+      <div class="page-head__inner">
+        <div>
+          <p class="eyebrow">About</p>
+          <h1>About Obsidixz</h1>
+        </div>
+        <p class="lede">
+          A parent organisation focused on building, developing and growing distinctive businesses
+          across different markets.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="what-title">
+    <div class="wrap">
+      <div class="parent-intro">
+        <div>
+          <p class="eyebrow">01 — The organisation</p>
+          <h2 id="what-title" class="display" style="margin-top:1rem; max-width:24rem;">
+            What Obsidixz is.
+          </h2>
+        </div>
+        <div class="parent-intro__body">
+          <p class="lede" style="max-width:38rem;">
+            Obsidixz is a parent organisation focused on building, developing and growing
+            distinctive businesses across different markets.
+          </p>
+          <p>
+            The parent is not a shopfront. It does not sell a service of its own, and this website
+            is not a catalogue. Each business under the Obsidixz name operates in its own market,
+            with its own audience, its own offer and its own level of maturity.
+          </p>
+          <p>
+            The identity is intentionally industry-neutral. Obsidixz should read as credible in
+            property research, in procurement intelligence and in games without borrowing the
+            language of any one of them.
+          </p>
+          <p>
+            What the parent contributes is structure and standard: a shared name, a shared set of
+            values, and an expectation that each business can explain clearly what it does and what
+            it does not.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--grey section--hairline" aria-labelledby="architecture-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">02 — Brand architecture</p>
+        <h2 id="architecture-title" class="display">How the names relate.</h2>
+        <p>
+          Obsidixz is the parent. The businesses carry the parent name and their market focus.
+          Products keep their own identity.
+        </p>
+      </div>
+
+      <BrandArchitecture />
+
+      <div class="note-panel" style="margin-top:clamp(1.5rem,3vw,2rem);">
+        <p>
+          <strong>What this does and does not mean.</strong> The architecture describes brand
+          relationships. It does not establish registered subsidiaries, incorporation, a
+          holding-company structure or financial ownership claims. Obsidixz is currently an
+          unregistered business brand operated by {site.operator}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="mission-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">03 — Mission and vision</p>
+        <h2 id="mission-title" class="display">What it is for. Where it is going.</h2>
+      </div>
+
+      <div class="statements" style="margin-top:clamp(2rem,4vw,3rem);">
+        <div class="statement">
+          <h3>Mission</h3>
+          <p>“{site.mission}”</p>
+        </div>
+        <div class="statement">
+          <h3>Vision</h3>
+          <p>“{site.vision}”</p>
+        </div>
+      </div>
+
+      <div class="note-panel" style="margin-top:clamp(1.5rem,3vw,2rem);">
+        <p>
+          <strong>The vision is an aspiration, not a record.</strong> It describes the organisation
+          Obsidixz intends to become. It is not evidence of existing international recognition,
+          offices, clients or scale, and nothing on this website should be read that way.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--grey section--hairline" id="values" aria-labelledby="values-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">04 — Values</p>
+        <h2 id="values-title" class="display">Six commitments, kept practical.</h2>
+        <p>
+          Values are only useful if they change a decision. These are the ones the businesses are
+          held to.
+        </p>
+      </div>
+
+      <ul class="values" style="margin-top:clamp(2rem,4vw,3rem);">
+        {
+          values.map((value, index) => (
+            <li>
+              <h3>
+                <span aria-hidden="true">0{index + 1}</span>
+                {value.name}
+              </h3>
+              <p>{value.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="status-title">
+    <div class="wrap">
+      <div class="parent-intro">
+        <div>
+          <p class="eyebrow">05 — Where things stand</p>
+          <h2 id="status-title" class="display" style="margin-top:1rem; max-width:24rem;">
+            An early organisation, stated plainly.
+          </h2>
+        </div>
+        <div class="parent-intro__body">
+          <p>
+            Obsidixz is at the beginning of its development. The businesses are at different stages:
+            Real Estate and Commercial are the current commercial priorities, while the Game Studio
+            website is deferred and not yet published.
+          </p>
+          <p>
+            Obsidixz is an unregistered business brand operated by <strong>{site.operator}</strong>
+            from {site.locality}. This website does not claim a registered company, an office
+            address, employees, clients, awards, investment or revenue, because those are not
+            established facts.
+          </p>
+          <p>
+            What exists is real work in defined markets, described honestly, and an organisation
+            being built to last.
+          </p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="/businesses/">
+              Explore our businesses
+              <Arrow />
+            </a>
+            <a class="btn btn--outline" href={GENERAL_MAILTO}>Email Obsidixz</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

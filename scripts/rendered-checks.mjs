@@ -57,13 +57,30 @@ const fail = (msg) => {
 const ok = (msg) => console.log(`ok    ${msg}`);
 
 const executablePath = process.env.CHROME_PATH ?? (await chromium.executablePath());
-const browser = await puppeteer.launch({
-  executablePath,
-  args: chromium.args,
-  headless: true,
-  protocolTimeout: 120_000,
-  defaultViewport: { width: 1440, height: 900 },
-});
+
+/** Launches Chromium, retrying a few times: cold CI runners occasionally stall on first launch. */
+async function launchBrowser(attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await puppeteer.launch({
+        executablePath,
+        args: chromium.args,
+        headless: true,
+        timeout: 120_000,
+        protocolTimeout: 180_000,
+        defaultViewport: { width: 1440, height: 900 },
+      });
+    } catch (error) {
+      lastError = error;
+      console.error(`launch attempt ${attempt}/${attempts} failed: ${error.message.split('\n')[0]}`);
+      if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 3_000));
+    }
+  }
+  throw lastError;
+}
+
+const browser = await launchBrowser();
 
 const newPage = async (width, height = 900, extra = {}) => {
   const page = await browser.newPage();

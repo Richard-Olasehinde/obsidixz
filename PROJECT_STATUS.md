@@ -46,6 +46,28 @@ This is the single authoritative status file. Anything contradicted here is supe
 Not run: Lighthouse, axe, real-browser zoom automation, screen-reader session, cross-browser engine
 testing. These are declared as limits rather than claimed as passes.
 
+## Continuous integration (GitHub Actions)
+
+`.github/workflows/ci.yml` runs on every pull request and on pushes to any branch except `main`.
+Two jobs: **Build and structural checks** (`npm ci`, `astro check`, `npm run build`, `npm run verify`)
+and **Rendered, interaction and no-JS checks** (installs Chromium system libraries, serves
+`npm run preview -- --port 4321`, waits for the port, then runs `check`, `interact`, `nojs`, `zoom`).
+
+Observed on the open pull request:
+
+| Run | Job | Result |
+| --- | --- | --- |
+| [42691297433](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691297433) | both (commit `d737689`) | build ✓, rendered ✓ |
+| [42691287195](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691287195) | both (commit `d737689`) | build ✓, rendered ✓ |
+| [42691190533](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691190533) | both (commit `20eb426`) | build ✓, rendered ✓ |
+| [42691176814](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42691176814) | rendered (commit `20eb426`) | ✗ once — same commit passed in the run above |
+
+The single failure was in the rendered step of a duplicate run triggered at the same commit; the
+job log was no longer retrievable, so the cause is **not** confirmed. Recorded as an unexplained
+one-off, not a passing result. To reduce that class of flake the browser launch now retries up to
+three times with a 120 s launch timeout and a 180 s protocol timeout, which does not change what is
+asserted. Local suite re-run after the change: `all` → 0 failures.
+
 ## Contrast and focus measurements
 
 Measured from the shipped tokens (WCAG 2.1 relative luminance, computed in `node`). Two tokens were

@@ -1,0 +1,339 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Arrow from '../components/ui/Arrow.astro';
+import BusinessFeature from '../components/sections/BusinessFeature.astro';
+import EmailBlock from '../components/sections/EmailBlock.astro';
+import BrandArchitecture from '../components/sections/BrandArchitecture.astro';
+
+import heroImage from '../assets/images/hero-architecture.jpg';
+import neighbourhoodImage from '../assets/images/real-estate-neighbourhood.jpg';
+import packagingImage from '../assets/images/commercial-packaging.jpg';
+import notebookImage from '../assets/images/editorial-notebook.jpg';
+
+import { site, businesses, businessById, GENERAL_MAILTO } from '../data/site';
+
+const realEstate = businessById('real-estate');
+const commercial = businessById('commercial');
+const studio = businessById('game-studio');
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: `${site.url}/`,
+  logo: `${site.url}/brand/obsidixz-parent-symbol-transparent.png`,
+  email: 'obsidixz@outlook.com',
+  description: site.descriptionLong,
+  founder: { '@type': 'Person', name: site.operator },
+};
+---
+
+<BaseLayout
+  title="Obsidixz | Our Businesses and Shared Foundation"
+  description="Discover Obsidixz, the parent brand behind Obsidixz Real Estate, Obsidixz Commercial and Obsidixz Game Studio."
+  structuredData={structuredData}
+>
+  <!-- 1. Photographic hero -->
+  <section class="hero" aria-labelledby="hero-title" data-testid="hero">
+    <div class="hero__media">
+      <Image
+        src={heroImage}
+        alt="Closely cropped architectural detail of limestone, dark glass and metal fins intersecting in low evening light"
+        widths={[640, 960, 1280, 1600]}
+        sizes="100vw"
+        format="webp"
+        quality={78}
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+
+    <div class="hero__inner wrap">
+      <div class="hero__body">
+        <p class="eyebrow eyebrow--inverse">Parent organisation</p>
+        <h1 id="hero-title">
+          <span>Distinct businesses.</span>
+          <span>A shared foundation.</span>
+        </h1>
+        <p class="hero__lede">
+          Obsidixz brings together businesses with different market focuses under a shared parent
+          identity.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--on-dark" href="/businesses/" data-testid="hero-primary">
+            Explore our businesses
+            <Arrow />
+          </a>
+          <a class="btn btn--ghost-inverse" href="/about/">About Obsidixz</a>
+        </div>
+      </div>
+
+      <p class="hero__meta">
+        Illustrative photograph — architectural detail, not an Obsidixz property.
+      </p>
+
+      <ul class="hero__index" aria-label="The businesses in brief">
+        {
+          businesses.map((business) => (
+            <li>
+              <a href={business.url ?? `/businesses/#${business.id}`}>
+                <span class="num" aria-hidden="true">{business.index}</span>
+                <span class="name">{business.name}</span>
+                <span class="desc">{business.kicker}</span>
+                <Arrow class="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. The parent role -->
+  <section class="section" aria-labelledby="parent-title">
+    <div class="wrap">
+      <div class="parent-intro">
+        <div>
+          <p class="eyebrow">01 — The parent</p>
+          <h2 id="parent-title" class="display" style="margin-top:1rem; max-width:22rem;">
+            A parent identity, not a shopfront.
+          </h2>
+
+          <div class="side-note">
+            <p class="side-note__label">At a glance</p>
+            <dl>
+              <div><dt>Identity</dt><dd>Parent organisation</dd></div>
+              <div>
+                <dt>Businesses</dt>
+                <dd>Real Estate · Commercial · Game Studio</dd>
+              </div>
+              <div><dt>Operated from</dt><dd>Nigeria</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="parent-intro__body">
+          <p>
+            <strong>Obsidixz is a parent organisation focused on building, developing and growing
+            distinctive businesses across different markets.</strong> It does not sell products or
+            services itself. Each business answers to its own market, with its own audience, its own
+            offer and its own stage of development.
+          </p>
+          <p>
+            What the parent holds in common is a standard: clarity about what is being offered,
+            honesty about what is known, and a long view of what is worth building.
+          </p>
+          <p>
+            The identity is deliberately industry-neutral. Property research, procurement
+            intelligence and games are different kinds of work — the relationship is the parent
+            brand, not a single product line.
+          </p>
+          <a class="link-arrow" href="/about/">
+            Read about the organisation
+            <Arrow />
+          </a>
+        </div>
+      </div>
+
+      <BrandArchitecture />
+    </div>
+  </section>
+
+  <!-- 3 & 4. Business features and the Game Studio entry -->
+  <section class="section section--grey section--hairline" aria-labelledby="businesses-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">02 — Our businesses</p>
+        <h2 id="businesses-title" class="display">Three businesses. Different markets.</h2>
+        <p>
+          Each is presented as it is today — not as it is projected to be. Real Estate and
+          Commercial are the current commercial priorities.
+        </p>
+      </div>
+
+      <div class="stack-lg" style="margin-top:clamp(2.5rem,5vw,4rem);">
+        <BusinessFeature
+          business={realEstate}
+          image={neighbourhoodImage}
+          alt="Established American residential street with detached houses, porches and mature trees in late afternoon light"
+          caption="Illustrative photograph — a residential street, not a client property or listing."
+        />
+
+        <BusinessFeature
+          business={commercial}
+          image={packagingImage}
+          alt="Corrugated carton, plain folding cartons, glass jar, kraft paper and material swatches arranged on a dark workshop bench"
+          caption="Illustrative photograph — packaging and material samples on a work surface."
+          reverse
+        />
+      </div>
+    </div>
+
+    <!-- Brief Game Studio entry -->
+    <div class="studio" style="margin-top:clamp(3rem,6vw,5rem);">
+      <div class="wrap">
+        <div class="studio__id">
+          <p class="eyebrow">Business {studio.index}</p>
+          <h3 class="studio__name">
+            <span class="studio__mark" aria-hidden="true"></span>
+            Obsidixz Game Studio
+          </h3>
+          <span class="studio__status">Website to follow</span>
+        </div>
+        <div class="studio__body">
+          <p>
+            The games-focused business within Obsidixz. <strong>Word Quest</strong> is its current
+            identified game project, and carries its own product identity.
+          </p>
+          <p>
+            The studio website is not published yet. Until it is, general enquiries can be sent to
+            the Obsidixz inbox.
+          </p>
+          <a class="link-arrow" href="/businesses/#game-studio">
+            See the Game Studio profile
+            <Arrow />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Shared foundation -->
+  <section class="section section--dark foundation" aria-labelledby="foundation-title">
+    <div class="wrap">
+      <div class="section-head section-head--inverse">
+        <p class="eyebrow eyebrow--inverse">03 — Shared foundation</p>
+        <h2 id="foundation-title" class="display" style="color:#fff;">
+          Built to the same standard.
+        </h2>
+        <p>
+          The businesses differ in market, method and maturity. What they share is the approach
+          behind them — and an obligation to describe it plainly.
+        </p>
+      </div>
+
+      <blockquote class="foundation__quote">
+        <p>“{site.mission}”</p>
+        <cite>The Obsidixz mission</cite>
+      </blockquote>
+
+      <ul class="principles">
+        <li>
+          <h3><span>01</span>Clarity before scale</h3>
+          <p>
+            Understanding a market properly comes before growth. A business should be able to
+            explain what it does, for whom, and what it does not do.
+          </p>
+        </li>
+        <li>
+          <h3><span>02</span>Long-term thinking</h3>
+          <p>
+            The businesses are developed to endure beyond a season of attention, with decisions
+            taken for the organisation that exists in five years.
+          </p>
+        </li>
+        <li>
+          <h3><span>03</span>Responsibility</h3>
+          <p>
+            Information, money and trust are handled as things held on behalf of other people —
+            particularly where research informs a client's decision.
+          </p>
+        </li>
+      </ul>
+
+      <div class="foundation__foot">
+        <a class="btn btn--ghost-inverse" href="/about/#values">
+          Read the mission, vision and values
+          <Arrow />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Editorial: the working surface -->
+  <section class="section" aria-labelledby="approach-title">
+    <div class="wrap">
+      <div class="editorial">
+        <figure class="editorial__media">
+          <Image
+            src={notebookImage}
+            alt="Open notebook with pencil diagrams and a pen, beside a stoneware cup, folded paper and steel ruler on a pale oak desk in natural light"
+            widths={[560, 840, 1120]}
+            sizes="(min-width: 62rem) 56vw, 100vw"
+            format="webp"
+            quality={78}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption class="caption">
+            Illustrative photograph — a working desk, not our office or client work.
+          </figcaption>
+        </figure>
+
+        <div class="editorial__body">
+          <p class="eyebrow">04 — Approach</p>
+          <h2 id="approach-title" class="display">Research before decision.</h2>
+          <p>
+            Every business here begins the same way: reading, asking, testing, and writing down
+            what is genuinely known. The work that comes before a decision is what makes the
+            decision defensible.
+          </p>
+          <p>
+            That is also why the businesses are specialist by design. A focused operation can study
+            one market closely — its buyers, its standards, its uncertainties — and say plainly
+            where its knowledge ends.
+          </p>
+          <blockquote class="pullquote">
+            Ambition is stated as ambition. Capability is demonstrated before it is claimed.
+          </blockquote>
+          <a class="link-arrow" href="/businesses/">See how each business works <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Invitation -->
+  <section class="section invite" aria-labelledby="invite-title">
+    <div class="wrap">
+      <div class="invite__inner">
+        <div class="invite__body">
+          <p class="eyebrow">05 — Contact</p>
+          <h2 id="invite-title">Start a conversation.</h2>
+          <p class="lede" style="margin-top:1.25rem;">
+            General enquiries about Obsidixz come to the parent inbox. If your question concerns a
+            specific business, its own inbox will reach the relevant desk faster.
+          </p>
+
+          <div class="invite__routes" aria-label="Business inboxes">
+            {
+              [realEstate, commercial].map((business) => (
+                <a href={`mailto:${business.email}?subject=${encodeURIComponent(`${business.name} — Website enquiry`)}`}>
+                  <span class="invite__routes-label">
+                    {business.kicker === 'Property research' ? 'Property research' : 'Supplier research'}
+                  </span>
+                  <span class="invite__routes-address">{business.email}</span>
+                </a>
+              ))
+            }
+          </div>
+
+          <a class="link-arrow" href="/contact/" style="margin-top:1.25rem;">
+            All contact routes
+            <Arrow />
+          </a>
+        </div>
+
+        <EmailBlock
+          label="General Obsidixz enquiries"
+          address="obsidixz@outlook.com"
+          href={GENERAL_MAILTO}
+          ctaLabel="Email Obsidixz"
+          copy
+          testId="cta-email"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

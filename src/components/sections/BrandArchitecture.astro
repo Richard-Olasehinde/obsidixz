@@ -1,0 +1,48 @@
+---
+/**
+ * Brand architecture: parent → businesses → product.
+ * Describes naming relationships only; it is not a legal or financial structure.
+ */
+type Props = { caption?: boolean };
+const { caption = true } = Astro.props;
+---
+
+<div class="arch" data-testid="brand-architecture">
+  <div class="arch__parent">
+    <span class="arch__tag">Parent</span>
+    <strong>Obsidixz</strong>
+    <span>Industry-neutral parent identity</span>
+  </div>
+  <ul class="arch__list">
+    <li>
+      <div class="arch__row">
+        <span class="arch__num">01</span>
+        <span class="arch__name">Obsidixz Real Estate</span>
+        <span class="arch__desc">US residential property research</span>
+      </div>
+    </li>
+    <li>
+      <div class="arch__row">
+        <span class="arch__num">02</span>
+        <span class="arch__name">Obsidixz Commercial</span>
+        <span class="arch__desc">International procurement intelligence</span>
+      </div>
+    </li>
+    <li>
+      <div class="arch__row">
+        <span class="arch__num">03</span>
+        <span class="arch__name">Obsidixz Game Studio</span>
+        <span class="arch__desc">Games development</span>
+      </div>
+      <span class="arch__child">Word Quest — product</span>
+    </li>
+  </ul>
+</div>
+{
+  caption && (
+    <p class="caption">
+      Brand relationships only. This describes how the names belong together; it is not a statement
+      of incorporation, subsidiaries or group structure.
+    </p>
+  )
+}

@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Local logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Local environment overrides (none are required by this project)
+.env
+.env.*
+!.env.example

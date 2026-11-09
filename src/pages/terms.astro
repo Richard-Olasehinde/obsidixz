@@ -1,0 +1,126 @@
+---
+import LegalLayout from '../components/layout/LegalLayout.astro';
+import { site, emails, businessById } from '../data/site';
+
+const realEstate = businessById('real-estate');
+const commercial = businessById('commercial');
+
+const toc = [
+  { href: '#purpose', label: 'What this website is' },
+  { href: '#relationships', label: 'Brand relationships' },
+  { href: '#accuracy', label: 'Accuracy and change' },
+  { href: '#destinations', label: 'External destinations' },
+  { href: '#email', label: 'Email is not an agreement' },
+  { href: '#ownership', label: 'Names, artwork and content' },
+  { href: '#availability', label: 'Availability' },
+  { href: '#contact', label: 'Contact' },
+  { href: '#changes', label: 'Changes to these terms' },
+];
+---
+
+<LegalLayout
+  title="Website Terms | Obsidixz"
+  description="The terms that apply to the Obsidixz parent website: its purpose, brand relationships, external business destinations and email contact."
+  heading="Website Terms"
+  lede="These terms apply to the Obsidixz parent website. They cover an informational site, not a sale — business services are agreed separately with the relevant business."
+  updated={site.lastUpdated}
+  toc={toc}
+>
+  <h2 id="purpose">What this website is</h2>
+  <p>
+    obsidixz.pp.ua is the website of the Obsidixz parent brand. It exists to explain what Obsidixz
+    is, introduce its businesses, direct visitors to the right business or inbox, and provide a
+    general contact route.
+  </p>
+  <p>
+    Nothing on this website is an offer to sell a product or service. Obsidixz does not provide a
+    service of its own through this site, and no purchase can be made here.
+  </p>
+
+  <h2 id="relationships">Brand relationships</h2>
+  <p>
+    Obsidixz is a parent brand. Obsidixz Real Estate, Obsidixz Commercial and Obsidixz Game Studio
+    are businesses that carry the parent name. Word Quest is a product of Obsidixz Game Studio and
+    keeps its own product identity.
+  </p>
+  <p>
+    This description is about naming and identity. It does not establish registered subsidiaries,
+    incorporation, a holding-company structure or financial ownership, and it does not make one
+    business responsible for another business's work. Obsidixz is currently an unregistered business
+    brand operated by {site.operator}.
+  </p>
+  <p>
+    Services provided by a business — including its scope, price, timing and terms — are agreed
+    separately and in writing with that business.
+  </p>
+
+  <h2 id="accuracy">Accuracy and change</h2>
+  <p>
+    The descriptions on this website reflect the organisation as it is at the date shown on the
+    policy pages, and they deliberately state the limits of each business. The businesses are at
+    different stages and will change; content may be updated, corrected or removed without notice.
+  </p>
+  <p>
+    Business descriptions are summaries for orientation, not a substitute for the details published
+    on a business's own website or agreed with it directly.
+  </p>
+
+  <h2 id="destinations">External destinations</h2>
+  <p>
+    This site links to business websites, among them
+    <a href={realEstate.url} rel="noopener">{realEstate.url}</a> and
+    <a href={commercial.url} rel="noopener">{commercial.url}</a>. Those sites are separate
+    destinations with their own content and terms. Their availability, accuracy and practices are
+    not controlled by this website.
+  </p>
+  <p>
+    Some contact links open your own email application. That application is provided by a third
+    party and its behaviour is outside this website's control.
+  </p>
+  <p>
+    Obsidixz Commercial is currently served over plain HTTP while its HTTPS certificate is
+    completed. Links to it are shown as HTTP for that reason.
+  </p>
+
+  <h2 id="email">Email is not an agreement</h2>
+  <p>
+    Sending an email to an Obsidixz address — or using a contact link on this site — does not create
+    a contract, a project, a purchase or a payment authorisation. It does not reserve capacity or
+    guarantee a reply within a particular time.
+  </p>
+  <p>
+    No payment should be made on the basis of this website. Where a business quotes for work, the
+    quotation is issued by that business with its own scope and terms.
+  </p>
+
+  <h2 id="ownership">Names, artwork and content</h2>
+  <p>
+    The Obsidixz name, the Interlock logo artwork and the text and photography on this website belong
+    to the brand's owner. You may read, link to and quote briefly from this site with attribution,
+    but it may not be republished as another organisation's own material or used to suggest an
+    affiliation that does not exist.
+  </p>
+
+  <h2 id="availability">Availability</h2>
+  <p>
+    The site is served as a static website with no promised uptime. It may be unavailable during
+    maintenance, hosting incidents or changes, and links may change as the businesses develop.
+  </p>
+  <p>
+    Email is not a secure channel for sensitive information. Please do not send banking credentials,
+    identity documents or passwords through it.
+  </p>
+
+  <h2 id="contact">Contact</h2>
+  <p>
+    Questions about these terms or about this website:
+    <a href={`mailto:${emails.general}`}>{emails.general}</a>. Business enquiries should go to the
+    relevant business inbox listed on the <a href="/contact/">contact page</a>.
+  </p>
+
+  <h2 id="changes">Changes to these terms</h2>
+  <p>
+    These terms may be updated as the website or the organisation changes. The date at the top of
+    this page shows the current version.
+  </p>
+</LegalLayout>

@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BusinessFeature from '../components/sections/BusinessFeature.astro';
+import Arrow from '../components/ui/Arrow.astro';
+import neighbourhoodImage from '../assets/images/real-estate-neighbourhood.jpg';
+import packagingImage from '../assets/images/commercial-packaging.jpg';
+import { businessById, emails, GENERAL_MAILTO, site } from '../data/site';
+
+const realEstate = businessById('real-estate');
+const commercial = businessById('commercial');
+const studio = businessById('game-studio');
+---
+
+<BaseLayout
+  title="Our Businesses | Obsidixz"
+  description="Obsidixz Real Estate, Obsidixz Commercial and Obsidixz Game Studio — what each business does, who it serves and where to go next."
+>
+  <section class="page-head">
+    <div class="wrap">
+      <div class="page-head__inner">
+        <div>
+          <p class="eyebrow">Our Businesses</p>
+          <h1>Three businesses, described as they are.</h1>
+        </div>
+        <p class="lede">
+          Each profile states the work, the audience and the limit of the offer. Business websites
+          and inboxes are the right route for business enquiries.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Business profiles">
+    <div class="wrap">
+      <div class="biz-profile">
+        <BusinessFeature
+          business={realEstate}
+          image={neighbourhoodImage}
+          alt="Established American residential street with detached houses, porches and mature trees in late afternoon light"
+          caption="Illustrative photograph — a residential street, not a client property or listing."
+          heading="h2"
+        />
+      </div>
+
+      <div class="biz-profile">
+        <BusinessFeature
+          business={commercial}
+          image={packagingImage}
+          alt="Corrugated carton, plain folding cartons, glass jar, kraft paper and material swatches arranged on a dark workshop bench"
+          caption="Illustrative photograph — packaging and material samples on a work surface."
+          heading="h2"
+          reverse
+        />
+      </div>
+
+      <div class="biz-profile">
+        <article class="studio-profile" id={studio.id} data-testid="biz-game-studio">
+          <div style="display:flex; flex-direction:column; gap:0.9rem; align-items:flex-start;">
+            <p class="eyebrow">Business {studio.index}</p>
+            <h2 class="biz-feature__name" style="margin:0;">Obsidixz Game Studio</h2>
+            <span class="studio__status">Website to follow</span>
+            <p class="caption" style="margin-top:0.25rem;">
+              The studio website and related launch work are deferred for now. No date is announced.
+            </p>
+          </div>
+
+          <div class="biz-feature__body">
+            <p class="biz-feature__summary">{studio.summary}</p>
+            {studio.body.map((paragraph) => <p>{paragraph}</p>)}
+
+            <dl class="biz-facts">
+              {
+                studio.facts.map((fact) => (
+                  <div>
+                    <dt>{fact.term}</dt>
+                    <dd>{fact.detail}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+
+            <p class="biz-scope"><strong>Scope.</strong> {studio.scope}</p>
+
+            <div class="biz-actions">
+              <a class="btn btn--primary" href={GENERAL_MAILTO}>
+                Email Obsidixz
+                <Arrow />
+              </a>
+              <a class="email-link" href={`mailto:${emails.general}`}>{emails.general}</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--grey section--hairline" aria-labelledby="routes-title">
+    <div class="wrap">
+      <div class="parent-intro">
+        <div>
+          <p class="eyebrow">Where each link goes</p>
+          <h2 id="routes-title" class="display" style="margin-top:1rem; max-width:22rem;">
+            Destinations, without guesswork.
+          </h2>
+        </div>
+        <div class="parent-intro__body">
+          <p>
+            <strong>Obsidixz Real Estate</strong> — served at
+            <a href={realEstate.url} rel="noopener" style="color:var(--royal);overflow-wrap:anywhere;">{realEstate.url}</a>.
+            <strong>Obsidixz Commercial</strong> — currently served at
+            <a href={commercial.url} rel="noopener" style="color:var(--royal);overflow-wrap:anywhere;">{commercial.url}</a>
+            over plain HTTP while its HTTPS certificate is completed.
+            <strong>Obsidixz Game Studio</strong> — no public site yet; Word Quest keeps its own
+            product identity.
+          </p>
+          <p>
+            If a destination is unreachable, the business inbox still works:
+            <a href={`mailto:${emails.realEstate}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.realEstate}</a>
+            and
+            <a href={`mailto:${emails.commercial}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.commercial}</a>.
+          </p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="/contact/">See all contact routes <Arrow /></a>
+          </div>
+          <p class="caption">
+            Obsidixz is a parent brand operated by {site.operator}. Business services are agreed
+            separately with the relevant business.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

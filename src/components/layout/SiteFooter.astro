@@ -1,0 +1,65 @@
+---
+import LogoLockup from '../brand/LogoLockup.astro';
+import { site, emails, primaryNav, footerLegal, businesses, GENERAL_MAILTO } from '../../data/site';
+
+const year = new Date().getFullYear();
+const generalHref = GENERAL_MAILTO.replace(/\?.*$/, '');
+---
+
+<footer class="footer" id="site-footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <LogoLockup tone="on-dark" />
+        <p>{site.descriptionLong}</p>
+        <p class="footer__operator">
+          Obsidixz is a business brand operated by {site.operator} from {site.locality}.
+        </p>
+      </div>
+
+      <div>
+        <h2>Navigate</h2>
+        <ul>
+          {primaryNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h2>Businesses</h2>
+        <ul>
+          {
+            businesses.map((business) => (
+              <li>
+                {business.url ? (
+                  <a href={business.url} rel="noopener">{business.name}</a>
+                ) : (
+                  <a href={`/businesses/#${business.id}`}>{business.name}</a>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href={generalHref} data-testid="footer-email">{emails.general}</a></li>
+          <li><a href="/contact/">All contact routes</a></li>
+          <li><a href="/businesses/">Business directories</a></li>
+        </ul>
+        <p class="footer__small" style="margin-top:1rem;">
+          For privacy questions about this website, use the general inbox above.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} Obsidixz. Operated by {site.operator}.</p>
+      <ul class="footer__legal">
+        {footerLegal.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a href="/sitemap-index.xml">Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

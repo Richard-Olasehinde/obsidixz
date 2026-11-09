@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailBlock from '../components/sections/EmailBlock.astro';
+import Arrow from '../components/ui/Arrow.astro';
+import { businesses, businessById, emails, GENERAL_MAILTO } from '../data/site';
+
+const realEstate = businessById('real-estate');
+const commercial = businessById('commercial');
+const studio = businessById('game-studio');
+
+const businessRoutes = [realEstate, commercial].map((business) => ({
+  ...business,
+  href: `mailto:${business.email}?subject=${encodeURIComponent(`${business.name} — Website enquiry`)}`,
+}));
+---
+
+<BaseLayout
+  title="Contact Obsidixz"
+  description="Email the general Obsidixz inbox, or contact Obsidixz Real Estate and Obsidixz Commercial directly. No forms, no tracking, no submitted data."
+>
+  <section class="page-head">
+    <div class="wrap">
+      <div class="page-head__inner">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h1>Contact Obsidixz</h1>
+        </div>
+        <p class="lede">
+          Choose the inbox that matches your enquiry. General questions about Obsidixz start with the
+          general address; work with a specific business is best sent to that business.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="general-title">
+    <div class="wrap">
+      <div class="routes">
+        <div class="route route--primary" data-testid="route-general">
+          <div class="route__intro">
+            <p class="route__kicker">Primary route</p>
+            <h2 id="general-title">General Obsidixz enquiries</h2>
+            <p>
+              For anything about Obsidixz itself: the organisation, this website, privacy questions,
+              or an enquiry that does not belong to a specific business.
+            </p>
+            <p class="route__note">
+              A short message describing what you need is enough to start. Nothing is submitted
+              through this page.
+            </p>
+          </div>
+          <EmailBlock
+            label="General inbox"
+            address={emails.general}
+            href={GENERAL_MAILTO}
+            ctaLabel="Email Obsidixz"
+            copy
+            plain
+            testId="general-email"
+          />
+        </div>
+
+        <div class="routes routes--secondary">
+          {
+            businessRoutes.map((business) => (
+              <div class="route" data-testid={`route-${business.id}`}>
+                <p class="route__kicker">Business route</p>
+                <h2>{business.kicker === 'Property research' ? 'Property research enquiries' : 'Supplier research enquiries'}</h2>
+                <p>{business.name} — {business.summary}</p>
+                <a class="route__address" href={business.href}>{business.email}</a>
+                <div class="route__actions">
+                  <a class="btn btn--primary" href={business.href}>
+                    Email {business.name}
+                    <Arrow />
+                  </a>
+                  {business.url && (
+                    <a class="btn btn--outline" href={business.url} rel="noopener">
+                      Visit the business site
+                    </a>
+                  )}
+                </div>
+                {business.urlInsecure && (
+                  <p class="route__note">
+                    The Commercial site is currently served over plain HTTP while its HTTPS
+                    certificate is completed.
+                  </p>
+                )}
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="route" data-testid="route-game-studio">
+          <p class="route__kicker">Studio enquiries</p>
+          <h2>{studio.name}</h2>
+          <p>
+            The studio has no public inbox or website yet. Game Studio and Word Quest enquiries can
+            be sent to the general Obsidixz address and will be routed from there.
+          </p>
+          <div class="route__actions">
+            <a class="btn btn--outline" href={GENERAL_MAILTO}>
+              Use the general inbox
+              <Arrow />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--grey section--hairline" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="parent-intro">
+        <div>
+          <p class="eyebrow">Before you write</p>
+          <h2 id="how-title" class="display" style="margin-top:1rem; max-width:22rem;">
+            How this page works.
+          </h2>
+        </div>
+        <div class="parent-intro__body">
+          <p>
+            This website has no enquiry form. Every action here opens your own email application
+            with the address already filled in. Nothing is submitted to, or stored by, this site.
+          </p>
+          <p>
+            Please do not include banking credentials, identity documents, passwords or other
+            sensitive information in a first message. If a project goes ahead, the relevant business
+            will explain what it needs and how to share it safely.
+          </p>
+          <p>
+            There is no automatic acknowledgement. Your message arrives in a Microsoft Outlook inbox;
+            replies are written by hand.
+          </p>
+          <div class="note-panel" style="margin-top:0.5rem;">
+            <p>
+              <strong>Which inbox?</strong> General questions, press and privacy requests →
+              <a href={`mailto:${emails.general}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.general}</a>.
+              Property research → <a href={`mailto:${emails.realEstate}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.realEstate}</a>.
+              Supplier research → <a href={`mailto:${emails.commercial}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.commercial}</a>.
+            </p>
+          </div>
+          <p class="caption">
+            Business destinations: {businesses.filter((b) => b.url).map((b) => b.url?.replace('https://', '').replace('http://', '').replace(/\/$/, '')).join(' · ')}.
+            Game Studio and Word Quest have no public site yet.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

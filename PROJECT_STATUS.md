@@ -65,6 +65,8 @@ Runs observed on this branch:
 | [42693453485](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693453485) | push + PR triggers | both jobs ✓ |
 | [42693467644](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693467644) | push + PR triggers | rendered job ✗ once |
 | [42693965330](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42693965330) | pull request only | both jobs ✓ |
+| [42694431040](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42694431040) | pull request only, annotated failures | rendered job ✗ — diagnosed as the stylesheet race below |
+| [42695194116](https://github.com/Richard-Olasehinde/obsidixz/actions/runs/42695194116) | pull request only, stylesheet wait | both jobs ✓ |
 
 The rendered job failed three times intermittently. The job log itself is not retrievable from this
 sandbox (the log download host is outside the allowed network), but after the workflow was changed to

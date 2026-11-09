@@ -99,3 +99,7 @@ browser zoom), `shots`, `all`.
 - Do not modify `obsidixz-estate` or `obsidixz-commercial`, their deployments or their DNS.
 - Do not invent legal entities, founding dates, clients, awards, revenue or an office.
 - Do not replace the supplied logo artwork with re-typed text or a redrawn emblem.
+
+- Rendered checks read computed styles in no-JS mode: they now call `waitForStyles()` first, because
+  `domcontentloaded` does not wait for CSS and the hamburger's hidden state is a CSS rule. If you add a
+  new assertion that depends on styling, wait for stylesheets the same way.

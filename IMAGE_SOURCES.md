@@ -3,7 +3,7 @@
 All dates are 2026-11-09. Nothing here was fetched from a stock library, a search engine or another
 website. No image is hotlinked; every file below is committed in this repository.
 
-> **Scope note on rights.** The four photographs are **AI-generated for this project**. They are
+> **Scope note on rights.** The photographs are **AI-generated for this project**. They are
 > recorded here with their actual provenance and with the terms that apply: output generated through
 > Arena's image tool, requested for this site. No universal guarantee is made that generated imagery
 > is free of every third-party claim in every jurisdiction — no such guarantee is possible, so none
@@ -17,7 +17,12 @@ website. No image is hotlinked; every file below is committed in this repository
 | Architectural detail (hero) | `src/assets/images/hero-architecture.jpg` (1264×848, 202 kB) | Generated 2026-11-09 with Arena's image tool | Generated for this project | Build-time WebP at 640/960/1280/1600 px via `astro:assets`; no manual retouching |
 | Residential street (Real Estate) | `src/assets/images/real-estate-neighbourhood.jpg` (1264×848, 342 kB) | Same | Same | Build-time WebP at 520/720/960 px |
 | Packaging and materials bench (Commercial) | `src/assets/images/commercial-packaging.jpg` (1264×848, 187 kB) | Same | Same | Build-time WebP at 520/720/960 px |
-| Open notebook on a desk (editorial) | `src/assets/images/editorial-notebook.jpg` (1264×848, 233 kB) | Same | Same | Build-time WebP at 560/840/1120 px |
+
+**Retired asset (2026-11-10).** `src/assets/images/editorial-notebook.jpg` was deleted with the
+homepage "Research before decision" section it illustrated: the notebook styling duplicated the
+business sites' research imagery, which the parent site should not echo. It was checked first — no
+page, component, metadata or script referenced it after the section was removed. Nothing else in this
+file changes for it; the prompt below is kept so the record stays complete.
 
 **Prompts (summarised).** Photorealistic editorial photography, wide landscape.
 
@@ -29,9 +34,9 @@ website. No image is hotlinked; every file below is committed in this repository
 3. *Commercial* — packaging and materials study on a dark workbench: plain corrugated carton,
    unprinted cartons, glass jar, kraft paper, twine, material swatches; non-legible pencil marks
    only; no branding or labels.
-4. *Editorial* — overhead open notebook with faint non-legible notes and pencil diagrams, matte
-   pen, stoneware cup, grey paper, steel ruler on pale oak; natural window light; no people,
-   devices or readable words.
+4. *Editorial* — retired 2026-11-10. Overhead open notebook with faint non-legible notes and pencil
+   diagrams, matte pen, stoneware cup, grey paper, steel ruler on pale oak; natural window light; no
+   people, devices or readable words.
 
 **Review notes.** Each output was inspected for legible text, faces, logos and identifiable
 architecture before being wired into a page. The notebook's handwriting is decorative scribble and

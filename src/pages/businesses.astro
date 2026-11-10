@@ -20,11 +20,11 @@ const studio = businessById('game-studio');
       <div class="page-head__inner">
         <div>
           <p class="eyebrow">Our Businesses</p>
-          <h1>Three businesses, described as they are.</h1>
+          <h1>Our businesses</h1>
         </div>
         <p class="lede">
-          Each profile states the work, the audience and the limit of the offer. Business websites
-          and inboxes are the right route for business enquiries.
+          Real Estate and Commercial are the current focus. Obsidixz Game Studio is developing
+          Word Quest, and its website is still to come.
         </p>
       </div>
     </div>
@@ -59,9 +59,6 @@ const studio = businessById('game-studio');
             <p class="eyebrow">Business {studio.index}</p>
             <h2 class="biz-feature__name" style="margin:0;">Obsidixz Game Studio</h2>
             <span class="studio__status">Website to follow</span>
-            <p class="caption" style="margin-top:0.25rem;">
-              The studio website and related launch work are deferred for now. No date is announced.
-            </p>
           </div>
 
           <div class="biz-feature__body">
@@ -98,29 +95,22 @@ const studio = businessById('game-studio');
     <div class="wrap">
       <div class="parent-intro">
         <div>
-          <p class="eyebrow">Where each link goes</p>
+          <p class="eyebrow">Contact</p>
           <h2 id="routes-title" class="display" style="margin-top:1rem; max-width:22rem;">
-            Destinations, without guesswork.
+            Talk to the right business.
           </h2>
         </div>
         <div class="parent-intro__body">
           <p>
-            <strong>Obsidixz Real Estate</strong> — served at
-            <a href={realEstate.url} rel="noopener" style="color:var(--royal);overflow-wrap:anywhere;">{realEstate.url}</a>.
-            <strong>Obsidixz Commercial</strong> — currently served at
-            <a href={commercial.url} rel="noopener" style="color:var(--royal);overflow-wrap:anywhere;">{commercial.url}</a>
-            over plain HTTP while its HTTPS certificate is completed.
-            <strong>Obsidixz Game Studio</strong> — no public site yet; Word Quest keeps its own
-            product identity.
-          </p>
-          <p>
-            If a destination is unreachable, the business inbox still works:
-            <a href={`mailto:${emails.realEstate}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.realEstate}</a>
-            and
-            <a href={`mailto:${emails.commercial}`} style="color:var(--royal);overflow-wrap:anywhere;">{emails.commercial}</a>.
+            Each business website and inbox is the direct route to that business. General questions
+            about Obsidixz come to the parent inbox.
           </p>
           <div class="btn-row">
-            <a class="btn btn--primary" href="/contact/">See all contact routes <Arrow /></a>
+            <a class="btn btn--primary" href={GENERAL_MAILTO}>
+              Email Obsidixz
+              <Arrow />
+            </a>
+            <a class="btn btn--outline" href="/contact/">All contact routes</a>
           </div>
           <p class="caption">
             Obsidixz is a parent brand operated by {site.operator}. Business services are agreed

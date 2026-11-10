@@ -65,10 +65,12 @@ export type Business = {
   body: string[];
   facts: { term: string; detail: string }[];
   scope: string;
+  /** Shorter wording used by the homepage business overview. */
+  homeSummary?: string;
+  /** One supporting line under the homepage summary. */
+  homeNote?: string;
   url?: string;
   urlLabel?: string;
-  /** True while the destination is served over plain HTTP. */
-  urlInsecure?: boolean;
   email?: string;
   emailLabel?: string;
   cta?: { href: string; label: string };
@@ -93,6 +95,9 @@ export const businesses: Business[] = [
     ],
     scope:
       'Research only. Obsidixz Real Estate is not a brokerage, estate-management service, property seller, investment fund or listings marketplace, and does not promise available property or profitable opportunities.',
+    homeSummary:
+      'Manual property prospect and lead research for US residential real-estate investors and acquisition operators.',
+    homeNote: 'Prepared against the market, budget and property criteria agreed with the client.',
     url: 'https://realestate.obsidixz.pp.ua/',
     urlLabel: 'Visit Obsidixz Real Estate',
     email: emails.realEstate,
@@ -116,11 +121,12 @@ export const businesses: Business[] = [
     ],
     scope:
       'Research and sourcing support only. It does not include supplier verification, physical inspection, negotiation, purchasing authority, logistics or any guarantee of supplier performance.',
-    // Current verified destination at the 9 November 2026 handoff, where HTTPS for the
-    // business subdomain was still pending. Business email is an alternative route.
-    url: 'http://commercial.obsidixz.pp.ua/',
+    homeSummary:
+      'Supplier research and procurement intelligence for businesses sourcing internationally, with packaging as the initial focus.',
+    homeNote: 'Quoted individually per project — there is no fixed package to buy from a page.',
+    // HTTPS confirmed live on 10 November 2026 (HTTP now redirects to it).
+    url: 'https://commercial.obsidixz.pp.ua/',
     urlLabel: 'Visit Obsidixz Commercial',
-    urlInsecure: true,
     email: emails.commercial,
     emailLabel: 'Email Obsidixz Commercial',
   },

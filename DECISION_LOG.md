@@ -61,7 +61,7 @@ never redrawn, recoloured or re-proportioned; only transparent padding was trimm
 1200×630: a black panel carrying the approved on-dark lockup beside the hero photograph. No
 re-typeset wordmark, no invented tagline.
 
-## 7. Obsidixz Commercial is linked over HTTP, transparently (2026-11-09)
+## 7. Obsidixz Commercial is linked over HTTP, transparently (2026-11-09) — SUPERSEDED 2026-11-10, see §16
 
 At the 2026-11-09 handoff the Commercial site was live over HTTP with its HTTPS certificate still
 pending. This sandbox cannot reach the site to re-check (see §8), so the site links the **working**
@@ -109,7 +109,7 @@ statement. Titles/descriptions are declared per page and validated by `scripts/v
 company, a founding year, staff, awards or certification. This is a guardrail against drift, not a
 substitute for review.
 
-## 13. Game Studio stays brief (2026-11-09)
+## 13. Game Studio stays brief (2026-11-09) — milestone updated 2026-11-10, see §17
 
 One compact entry on the home page and one panel on Our Businesses: relationship, Word Quest as its
 current identified project, "Website to follow", general inbox as the route. No date, no countdown,
@@ -122,3 +122,44 @@ hosting and its technical logs, no site cookies/analytics, and a retention posit
 about not having fixed a period yet. Terms stay informational: no invented governing law, liability
 exclusions, refunds or payment rules; nothing that reads as a service agreement. Both identify the
 operator as an individual and the brand as unregistered.
+
+## 15. Homepage cut to five sections (2026-11-10)
+
+**Decision.** The homepage is now hero → short parent introduction → business overview → compact
+shared foundation → general contact invitation.
+
+**Why.** The first version carried the language and imagery of the business sites: a research-desk
+photograph, a "Research before decision" essay, three parent-voice "principles" that restated the
+values, an architecture diagram that repeated the business list, and a directory of business inboxes
+next to a second directory of the same addresses. Together they made the parent read like another
+research provider and buried the actual destinations. Removing them cut the page by 32% at 1440 px
+and 39% at 390 px.
+
+**Guardrails.** The architectural hero, the complete logo, the approved description/mission/vision,
+the two substantial business photographs, the Game Studio entry and the direct-email contact model
+are unchanged. Facts and scope statements were not deleted — they moved to `/businesses/`, where a
+reader is already asking about that business. The values explanations now live only on `/about/`;
+the homepage shows the six names and links to them.
+
+## 16. Commercial destination moved to HTTPS (2026-11-10)
+
+**Decision.** `businesses[1].url` is `https://commercial.obsidixz.pp.ua/`; `urlInsecure` and every
+plain-HTTP notice were deleted from `BusinessFeature.astro`, `/businesses/`, `/contact/` and
+`/terms/`.
+
+**Why.** The founder's live check on 2026-11-10 found HTTPS responding and HTTP redirecting to it, so
+the reason for the HTTP link and the notices about a pending certificate no longer existed. This
+sandbox could not repeat the check (HTTP/TLS egress is blocked); the switch rests on that
+founder-verified state and is re-checked after deployment.
+
+**Not done.** Nothing was changed in the Commercial repository, its DNS, its certificate or its
+hosting.
+
+## 17. Game Studio milestone: defer until Word Quest launches (2026-11-10)
+
+**Decision.** The internal milestone is now "defer the Game Studio website until Word Quest
+launches", superseding the earlier "until Word Quest completes closed testing".
+
+**Why.** The founder revised the trigger. This is an internal planning note, not a public promise:
+the site continues to say only "Website to follow", with no date, countdown, store link, testing
+invitation or launch statement, and no Game Studio page, subdomain or inbox was created.

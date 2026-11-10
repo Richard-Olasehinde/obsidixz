@@ -17,8 +17,7 @@ import { site, values, GENERAL_MAILTO } from '../data/site';
           <h1>About Obsidixz</h1>
         </div>
         <p class="lede">
-          A parent organisation focused on building, developing and growing distinctive businesses
-          across different markets.
+          The organisation behind Obsidixz Real Estate, Obsidixz Commercial and Obsidixz Game Studio.
         </p>
       </div>
     </div>
@@ -35,23 +34,17 @@ import { site, values, GENERAL_MAILTO } from '../data/site';
         </div>
         <div class="parent-intro__body">
           <p class="lede" style="max-width:38rem;">
-            Obsidixz is a parent organisation focused on building, developing and growing
-            distinctive businesses across different markets.
+            <strong>Obsidixz is a parent organisation focused on building, developing and growing
+            distinctive businesses across different markets.</strong>
           </p>
           <p>
-            The parent is not a shopfront. It does not sell a service of its own, and this website
-            is not a catalogue. Each business under the Obsidixz name operates in its own market,
-            with its own audience, its own offer and its own level of maturity.
+            Each business has its own market focus, its own audience and its own stage of
+            development. The parent holds the shared name and one standard: clarity about what is
+            offered, honesty about what is known, and a long view of what is worth building.
           </p>
           <p>
-            The identity is intentionally industry-neutral. Obsidixz should read as credible in
-            property research, in procurement intelligence and in games without borrowing the
-            language of any one of them.
-          </p>
-          <p>
-            What the parent contributes is structure and standard: a shared name, a shared set of
-            values, and an expectation that each business can explain clearly what it does and what
-            it does not.
+            Obsidixz is an unregistered business brand operated by
+            <strong>{site.operator}</strong>, from {site.locality}.
           </p>
         </div>
       </div>
@@ -69,16 +62,12 @@ import { site, values, GENERAL_MAILTO } from '../data/site';
         </p>
       </div>
 
-      <BrandArchitecture />
+      <BrandArchitecture caption={false} />
 
-      <div class="note-panel" style="margin-top:clamp(1.5rem,3vw,2rem);">
-        <p>
-          <strong>What this does and does not mean.</strong> The architecture describes brand
-          relationships. It does not establish registered subsidiaries, incorporation, a
-          holding-company structure or financial ownership claims. Obsidixz is currently an
-          unregistered business brand operated by {site.operator}.
-        </p>
-      </div>
+      <p class="caption" style="margin-top:1rem; max-width:52rem;">
+        Brand relationships only: this is not a statement of incorporation, subsidiaries or group
+        ownership.
+      </p>
     </div>
   </section>
 
@@ -97,15 +86,8 @@ import { site, values, GENERAL_MAILTO } from '../data/site';
         <div class="statement">
           <h3>Vision</h3>
           <p>“{site.vision}”</p>
+          <p class="caption">Where Obsidixz is heading.</p>
         </div>
-      </div>
-
-      <div class="note-panel" style="margin-top:clamp(1.5rem,3vw,2rem);">
-        <p>
-          <strong>The vision is an aspiration, not a record.</strong> It describes the organisation
-          Obsidixz intends to become. It is not evidence of existing international recognition,
-          offices, clients or scale, and nothing on this website should be read that way.
-        </p>
       </div>
     </div>
   </section>
@@ -115,10 +97,7 @@ import { site, values, GENERAL_MAILTO } from '../data/site';
       <div class="section-head">
         <p class="eyebrow">04 — Values</p>
         <h2 id="values-title" class="display">Six commitments, kept practical.</h2>
-        <p>
-          Values are only useful if they change a decision. These are the ones the businesses are
-          held to.
-        </p>
+        <p>The standards the businesses are held to.</p>
       </div>
 
       <ul class="values" style="margin-top:clamp(2rem,4vw,3rem);">
@@ -143,24 +122,17 @@ import { site, values, GENERAL_MAILTO } from '../data/site';
         <div>
           <p class="eyebrow">05 — Where things stand</p>
           <h2 id="status-title" class="display" style="margin-top:1rem; max-width:24rem;">
-            An early organisation, stated plainly.
+            Where Obsidixz stands.
           </h2>
         </div>
         <div class="parent-intro__body">
           <p>
-            Obsidixz is at the beginning of its development. The businesses are at different stages:
-            Real Estate and Commercial are the current commercial priorities, while the Game Studio
-            website is deferred and not yet published.
+            Obsidixz is at an early stage of its development. Obsidixz Real Estate and Obsidixz
+            Commercial are the current focus; the Obsidixz Game Studio website is still to come.
           </p>
           <p>
-            Obsidixz is an unregistered business brand operated by <strong>{site.operator}</strong>
-            from {site.locality}. This website does not claim a registered company, an office
-            address, employees, clients, awards, investment or revenue, because those are not
-            established facts.
-          </p>
-          <p>
-            What exists is real work in defined markets, described honestly, and an organisation
-            being built to last.
+            Enquiries about a business are answered by that business. General questions about
+            Obsidixz come to the parent inbox.
           </p>
           <div class="btn-row">
             <a class="btn btn--primary" href="/businesses/">

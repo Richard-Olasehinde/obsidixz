@@ -56,7 +56,7 @@ src/
   components/brand|layout|sections|ui/
   pages/                 ← /, /about/, /businesses/, /contact/, /privacy/, /terms/, 404
   styles/global.css      ← design tokens + components
-  assets/images/         ← four generated photographs (see IMAGE_SOURCES.md)
+  assets/images/         ← three generated photographs in use (see IMAGE_SOURCES.md)
 public/                  ← brand artwork, favicons, robots.txt, social image, CNAME
 scripts/                 ← verify.mjs, rendered-checks.mjs, build-assets.mjs
 verification/screenshots ← rendered evidence
@@ -70,8 +70,8 @@ verification/screenshots ← rendered evidence
   guidelines. Do not extend them into claims about scale, clients, awards or legal structure.
 - The website does not invent: a founding date, name origin, employees, offices, clients,
   partnerships, revenue, or a registered company. Keep it that way.
-- Game Studio is deliberately brief. Its website is deferred until Word Quest completes closed
-  testing; do not add a launch date, countdown, store link or test invitation.
+- Game Studio is deliberately brief. Its website is deferred until Word Quest launches; do not add a
+  launch date, countdown, store link or test invitation.
 
 ## Documentation
 

@@ -1,13 +1,24 @@
 # DEPLOYMENT — Obsidixz parent website
 
-**Intended production domain:** https://obsidixz.pp.ua/
+**Production domain (live):** https://obsidixz.pp.ua/
 **Build output:** `dist/` — static HTML/CSS/JS, fonts, images. No server code, no database, no
 secrets, no environment variables.
 
-**Status at handover (2026-11-09):** the production build, workflow and custom-domain configuration
-are prepared and tested locally; **the site has not been deployed** from this branch. Publishing
-requires a merge to `main` plus the one-time Pages settings below, which need repository-owner
-access. Nothing here has been purchased.
+**Status (2026-11-10):** **deployed and live.** PR #1 was merged to `main` on 2026-11-09 and Pages
+published the site after "GitHub Actions" was selected as the source and the custom domain was saved.
+A page refinement followed on 2026-11-10 (`PROJECT_STATUS.md`). Nothing here has been purchased.
+
+The first deploy attempt failed before publishing, because the workflow ran on merge while Pages was
+still unconfigured:
+
+```
+HttpError: Not Found … /rest/pages/pages#get-a-pages-site
+Get Pages site failed. Please verify that the repository has Pages enabled and configured…
+```
+
+`actions/configure-pages@v5` aborts when the repository has no Pages site yet, so the build never
+uploaded an artefact and the domain served GitHub's stock 404 until the run was re-run after §2 step 2.
+If it happens again, re-running the failed run is enough.
 
 ---
 
@@ -147,33 +158,38 @@ curl -sI http://commercial.obsidixz.pp.ua/ | head -1
 `npm run verify` already checks titles, descriptions, canonicals, internal links, assets, sitemap
 coverage, the exact `mailto:` literal, third-party hosts and claim patterns against `dist/`.
 
-## 5. Commercial HTTPS switch (one-line change)
+## 5. Commercial HTTPS switch — done 2026-11-10
 
-At handover the Commercial site was reported live over **HTTP** with its certificate pending, so this
-site links `http://commercial.obsidixz.pp.ua/` and says so in one line beside the button.
+The Commercial site was reported live over HTTP with its certificate pending at the 2026-11-09
+handoff, so the parent site temporarily linked `http://commercial.obsidixz.pp.ua/` and said so.
 
-When `curl -sI https://commercial.obsidixz.pp.ua/` returns 200 with a valid certificate:
+On 2026-11-10 the founder's live check found HTTPS responding and HTTP redirecting to it, so the
+switch was completed:
 
-1. `src/data/site.ts` → `businesses[1].url` → `https://commercial.obsidixz.pp.ua/`
-2. delete `urlInsecure: true` on the same object;
-3. remove the now-unused notes rendered by `business.urlInsecure` in `BusinessFeature.astro`,
-   `businesses.astro` and `contact.astro`;
-4. `npm run build && npm run verify` and redeploy.
+- `src/data/site.ts` → `businesses[1].url` is `https://commercial.obsidixz.pp.ua/`;
+- `urlInsecure` was deleted from the data type and from that business object;
+- the plain-HTTP notes were removed from `BusinessFeature.astro`, `/businesses/`, `/contact/` and the
+  single sentence in `/terms/`;
+- `npm run verify` re-checks every business link on every build.
 
-Nothing else in the codebase hard-codes that destination.
+The sandbox could not repeat the founder's check (HTTP/TLS egress is blocked), so after any future
+deployment confirm `curl -sI https://commercial.obsidixz.pp.ua/` returns 200 and
+`curl -sI http://commercial.obsidixz.pp.ua/` redirects. Nothing was changed in the Commercial
+repository, its DNS, its certificate or its hosting.
 
 ## 6. Remaining actions (in order)
 
 | # | Action | Owner | Where / notes |
 | --- | --- | --- | --- |
-| 1 | Inspect the existing `obsidixz.pp.ua` DNS records (A/AAAA/MX/TXT/CNAME) and save a copy | Founder | Registrar/DNS panel for `.pp.ua`; sandbox egress is blocked, so this must be done with real DNS access |
-| 2 | Add the eight apex A/AAAA records from §3a, preserving MX/TXT and the business subdomains | Founder | Do not touch `realestate.`/`commercial.` |
-| 3 | Pages → **Source: GitHub Actions** | Founder | <https://github.com/Richard-Olasehinde/obsidixz/settings/pages> |
-| 4 | Pages → **Custom domain** `obsidixz.pp.ua` → Save | Founder | Same page; this is what binds the domain for Actions |
-| 5 | Merge PR #1 to `main` so `deploy.yml` runs | Founder | <https://github.com/Richard-Olasehinde/obsidixz/pull/1> → run: <https://github.com/Richard-Olasehinde/obsidixz/actions/workflows/deploy.yml> |
-| 6 | Wait for DNS check to pass, then tick **Enforce HTTPS** | Founder | No fixed issuance time promised |
-| 7 | Run the §4 checks against the live domain and record the results here | Founder | Implementation tested locally; live deployment not verified from this sandbox |
-| 8 | Switch the Commercial link when its HTTPS works (§5) | Founder | Optional until verified |
+| 1 | Inspect the `obsidixz.pp.ua` DNS records and save a copy | Founder | **Done** — the apex records already pointed at GitHub Pages |
+| 2 | Add the eight apex A/AAAA records from §3a, preserving MX/TXT and the business subdomains | Founder | **Done** — verified by DNS query on 2026-11-10 (all four A and all four AAAA); mail records untouched |
+| 3 | Pages → **Source: GitHub Actions** | Founder | **Done** — <https://github.com/Richard-Olasehinde/obsidixz/settings/pages> |
+| 4 | Pages → **Custom domain** `obsidixz.pp.ua` → Save | Founder | **Done** — GitHub reports "DNS check successful" |
+| 5 | Merge PR #1 to `main` so `deploy.yml` runs | Founder | **Done** — first run failed at `configure-pages` (Pages not yet enabled), re-run published the site |
+| 6 | Wait for DNS check to pass, then tick **Enforce HTTPS** | Founder | **Done** — confirmed in the founder's Pages screenshot |
+| 7 | Run the §4 checks against the live domain and record the results here | Founder | **Partly done** — `/` and `/businesses/` confirmed live; 404, redirects, canonicals and sitemap still unrecorded |
+| 8 | Switch the Commercial link when its HTTPS works (§5) | Founder | **Done 2026-11-10** — the code change is in the refinement branch |
+| 9 | Re-run the §4 checks after each deploy of the refinement | Founder | Open |
 
 ## 7. Rollback
 

@@ -37,8 +37,7 @@ obsidixz/
 │   ├── assets/images/          source photography (JPEG, 1264×848)
 │   │   ├── hero-architecture.jpg
 │   │   ├── real-estate-neighbourhood.jpg
-│   │   ├── commercial-packaging.jpg
-│   │   └── editorial-notebook.jpg
+│   │   └── commercial-packaging.jpg
 │   ├── data/site.ts            identity, businesses, emails, nav, values, email copy
 │   ├── styles/global.css       tokens, reset, layout, components, responsive rules
 │   ├── layouts/BaseLayout.astro    head/meta/fonts, skip link, header, main, footer
@@ -52,7 +51,7 @@ obsidixz/
 │   │   ├── sections/EmailBlock.astro        address, CTA, copy button, helper copy
 │   │   └── ui/Arrow.astro
 │   └── pages/
-│       ├── index.astro        hero, parent role, businesses, studio, foundation, editorial, invite
+│       ├── index.astro        hero, parent introduction, businesses, studio, foundation, invite
 │       ├── about.astro        organisation, architecture, mission/vision, values, status
 │       ├── businesses.astro   three profiles, Game Studio panel, destination notes
 │       ├── contact.astro      general route, business routes, studio route, how-it-works

@@ -518,7 +518,7 @@ async function runShots() {
   await shot({ name: 'home-lower-commercial-1440x900', route: '/', width: 1440, at: '#commercial' });
   await shot({ name: 'home-lower-studio-1440x900', route: '/', width: 1440, at: '.studio' });
   await shot({ name: 'home-lower-foundation-1440x900', route: '/', width: 1440, at: '#foundation-title' });
-  await shot({ name: 'home-editorial-1440x900', route: '/', width: 1440, at: '#approach-title' });
+  await shot({ name: 'home-lower-values-1440x900', route: '/', width: 1440, at: '.values-strip' });
   await shot({ name: 'home-invite-1440x900', route: '/', width: 1440, at: '#invite-title' });
   await shot({ name: 'home-mobile-390x844', route: '/', width: 390, height: 844, fullPage: true });
   await shot({ name: 'home-mobile-hero-390x844', route: '/', width: 390, height: 844 });
@@ -527,7 +527,7 @@ async function runShots() {
   await shot({ name: 'home-mobile-commercial-390x844', route: '/', width: 390, height: 844, at: '#commercial' });
   await shot({ name: 'home-mobile-studio-390x844', route: '/', width: 390, height: 844, at: '.studio' });
   await shot({ name: 'home-mobile-foundation-390x844', route: '/', width: 390, height: 844, at: '#foundation-title' });
-  await shot({ name: 'home-mobile-editorial-390x844', route: '/', width: 390, height: 844, at: '#approach-title' });
+  await shot({ name: 'home-mobile-values-390x844', route: '/', width: 390, height: 844, at: '.values-strip' });
   await shot({ name: 'home-mobile-invite-390x844', route: '/', width: 390, height: 844, at: '#invite-title' });
   await shot({ name: 'home-mobile-footer-390x844', route: '/', width: 390, height: 844, at: '#site-footer' });
   await shot({ name: 'mobile-menu-expanded-390x844', route: '/', width: 390, height: 844, after: async (page) => {

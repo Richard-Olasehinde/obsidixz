@@ -1,7 +1,7 @@
 # PROJECT STATUS — Obsidixz parent website
 
-**Date:** 2026-11-09 (UTC) · **Branch:** `arena/576f68a7-obsidixz` · **Repo:** `Richard-Olasehinde/obsidixz`
-**Intended production origin:** https://obsidixz.pp.ua/
+**Date:** 2026-11-10 (UTC) · **Branch:** `arena/1ddb75a3-obsidixz` (refinement) · **Repo:** `Richard-Olasehinde/obsidixz`
+**Production origin (live):** https://obsidixz.pp.ua/
 **Stack:** Astro 6.4.8 (static), plain CSS, self-hosted fonts, ~4 kB progressive-enhancement JS.
 
 This is the single authoritative status file. Anything contradicted here is superseded.
@@ -11,13 +11,13 @@ This is the single authoritative status file. Anything contradicted here is supe
 | Stage | Status | Evidence |
 | --- | --- | --- |
 | 1. Foundation & references | **DONE** | Empty repo initialised; Astro 6.4.8 stack installed and building; brand artwork copied and hash-verified; four generated photographs; design tokens, type scale and shared layout in `src/styles/global.css` |
-| 2. Homepage & navigation | **DONE** | Photographic hero, hero index, parent role + architecture, two image-led business features, Game Studio entry, dark foundation, editorial photograph, invitation, footer. Header/menu behaviour tested |
+| 2. Homepage & navigation | **DONE** | Five sections: photographic hero with index, short parent introduction, business overview with two image-led features plus the brief Game Studio entry, compact shared foundation, general contact invitation. Header/menu behaviour tested. The 2026-11-10 refinement removed the research-desk section, the architecture diagram (now only on About) and the business-inbox directory from this page |
 | 3. About & Our Businesses | **DONE** | Approved description/mission/vision/values; three accurate profiles with scope limits; Game Studio kept to a brief entry with no date, link or launch promise |
 | 4. Contact & policies | **DONE** | Three routes + copy button, exact general `mailto:`, privacy notice and website terms written to actual configuration; no form infrastructure |
 | 5. Responsive & accessibility | **DONE** | 6 routes × 320/390/768/1024/1440 px: no horizontal overflow, no console errors, no failed requests, no broken visible images; 200% root font-size clean; no-JS suite; focus/inert/Escape/focus-return suite |
 | 6. SEO & production prep | **DONE** | Unique titles/descriptions, production canonicals, OG/Twitter, derived favicon set, 1200×630 social card, sitemap, robots, `/.nojekyll`, social manifest |
 | 7. Rendered verification | **DONE (local)** | Screenshots in `verification/screenshots/` produced from the served **production** build by headless Chromium; each file's viewport and page are listed below |
-| 8. Deployment & handover | **BLOCKED (owner access)** | Workflow and instructions ready (`DEPLOYMENT.md`); DNS/Pages settings require repository-owner access; site is **not** live from this branch |
+| 8. Deployment & handover | **DONE** | Deployed by GitHub Actions on 2026-11-09 after Pages was set to "GitHub Actions" and the custom domain was saved; live at https://obsidixz.pp.ua/. The first run failed at `configure-pages` because Pages had not been enabled yet — see `DEPLOYMENT.md` §3 |
 
 ## Delivery status — kept separate on purpose
 
@@ -26,10 +26,35 @@ This is the single authoritative status file. Anything contradicted here is supe
 2. **Visual verification — PASS at the tested commit.** Screenshots were produced, inspected and
    corrected (image stretch, hero index alignment, mobile scrim, stretched link underlines,
    invitation composition, tablet strip wrapping). No founder approval has been given or implied.
-3. **Deployment — NOT DONE.** Not deployed from this branch. No domain or DNS change was made.
+3. **Deployment — LIVE.** Published to GitHub Pages at https://obsidixz.pp.ua/ (apex A + AAAA,
+`www` CNAME, mail records untouched). Live rendering was seen in the founder's screenshots of
+`/` and `/businesses/`; the deployment itself was carried out by the founder, not from this
+workspace. TLS, redirects and live headers were **not** measured from here.
 4. **Inbox receipt/reply — NOT VERIFIED.** Contact behaviour (exact `mailto:`, subject, copy
    success/denial) is verified in the browser. Whether `obsidixz@outlook.com` receives and replies
    was **not** independently tested; no such claim is made anywhere on the site.
+
+## Refinement pass — 2026-11-10
+
+A bounded editorial and visual refinement of the live site, on branch `arena/1ddb75a3-obsidixz`.
+
+| Change | Detail |
+| --- | --- |
+| Homepage shortened | 6,852 → **4,674 px** at 1440 (‑32%); 10,044 → **6,158 px** at 390 (‑39%) |
+| Parent introduction | Heading "A parent identity, not a shopfront." → **"The organisation behind the businesses."**; approved description kept verbatim; one concise explanation; "At a glance" table removed |
+| Business overview | Homepage profiles reduced to name, approved short description, one supporting line and a website action; full body, facts and scope stay on `/businesses/` |
+| Research-desk section | Removed, with its image. The architectural hero and the two business photographs carry the visual load |
+| Brand architecture | Removed from the homepage (it repeated the business list); kept and clarified on `/about/` |
+| Shared foundation | Reduced to the mission quote, the six value *names* and a link to `/about/#values`; the values explanations live only on About |
+| Contact invitation | One general invite; the business-address directory was removed from this page and routed through `/contact/` |
+| About | Defensive/self-referential passages removed ("not a shopfront", "vision is not a record", "this website does not claim…"); legal identification kept in one sentence |
+| Our Businesses | H1 "Three businesses, described as they are." → "Our businesses"; the "Destinations, without guesswork" section (which duplicated every button) replaced by one contact band |
+| Commercial HTTPS | Destination switched to `https://commercial.obsidixz.pp.ua/`; `urlInsecure` and the plain-HTTP notices removed from the component, `/businesses/`, `/contact/` and `/terms/` |
+| Game Studio | Public copy unchanged in substance; the internal milestone is now "defer until Word Quest launches" (see `DECISION_LOG.md` §17) |
+| CSS | ~2.8 kB of rules for the removed sections deleted; `.values-strip`, `.biz-feature__note` and the compact card added |
+
+Verification for this pass is in the table below; before/after captures are in
+`verification/refinement/` and the refreshed set in `verification/screenshots/`.
 
 ## Tests performed (actual results)
 
@@ -42,6 +67,18 @@ This is the single authoritative status file. Anything contradicted here is supe
 | No JavaScript | `rendered-checks nojs` | Static navigation block visible at 390 px, hidden at desktop width; no dialog semantics; copy button hidden; exact mailto intact; body text present |
 | Text-size simulation | `rendered-checks zoom` | 200% root font-size clean on 6 routes at 390 and 1440 px (simulation only — real browser zoom is not driven by puppeteer, see §Limits) |
 | Console/asset errors | within `check` | None across 30 page loads |
+
+**Re-run for the 2026-11-10 refinement (all on the final build of this branch):**
+
+| Check | Result |
+| --- | --- |
+| `astro check` | 0 errors, 0 warnings, 3 hints (the intentional deprecated `execCommand` fallbacks) |
+| `npm run verify` | 10/10 checks passed |
+| `rendered-checks check` | 6 routes × 320/390/768/1024/1440 — 0 failures; branded 404 with status 404 |
+| `rendered-checks interact` | 9/9 — menu, focus, `inert`, Escape, Tab trap, clipboard success/denial/legacy, 5 primary CTAs |
+| `rendered-checks nojs` | 2/2 |
+| `rendered-checks zoom` | 12/12 (200% text-size simulation) |
+| `rendered-checks shots` | 31 captures regenerated, 0 failures |
 
 Not run: Lighthouse, axe, real-browser zoom automation, screen-reader session, cross-browser engine
 testing. These are declared as limits rather than claimed as passes.
@@ -139,7 +176,7 @@ recorded in the handover message.
 | `home-lower-commercial-1440x900.png` | `/` Commercial feature | 1440×900 |
 | `home-lower-studio-1440x900.png` | `/` Game Studio + foundation start | 1440×900 |
 | `home-lower-foundation-1440x900.png` | `/` dark foundation | 1440×900 |
-| `home-editorial-1440x900.png` | `/` editorial photograph | 1440×900 |
+| `home-lower-values-1440x900.png` | `/` shared foundation: mission + values | 1440×900 |
 | `home-invite-1440x900.png` | `/` contact invitation + footer | 1440×900 |
 | `home-mobile-390x844.png` | `/` full page | 390×844 |
 | `home-mobile-hero-390x844.png` | `/` hero | 390×844 |
@@ -148,7 +185,7 @@ recorded in the handover message.
 | `home-mobile-commercial-390x844.png` | `/` Commercial feature | 390×844 |
 | `home-mobile-studio-390x844.png` | `/` Game Studio entry | 390×844 |
 | `home-mobile-foundation-390x844.png` | `/` foundation | 390×844 |
-| `home-mobile-editorial-390x844.png` | `/` editorial | 390×844 |
+| `home-mobile-values-390x844.png` | `/` shared foundation | 390×844 |
 | `home-mobile-invite-390x844.png` | `/` invitation | 390×844 |
 | `home-mobile-footer-390x844.png` | `/` footer | 390×844 |
 | `mobile-menu-expanded-390x844.png` | `/` menu open | 390×844 |
@@ -171,8 +208,8 @@ recorded in the handover message.
 - Real Estate and Commercial each carry a "Scope" statement of what they do **not** do.
 - Game Studio: relationship, Word Quest as current identified project, "Website to follow", general
   inbox. No date, no store link, no test invitation, no games subdomain.
-- Business destinations: Real Estate `https://realestate.obsidixz.pp.ua/` (as recorded);
-  Commercial `http://commercial.obsidixz.pp.ua/` marked as HTTP pending its certificate.
+- Business destinations: Real Estate `https://realestate.obsidixz.pp.ua/` and Commercial
+  `https://commercial.obsidixz.pp.ua/` — both HTTPS as of 2026-11-10; no plain-HTTP notices remain.
 
 ## Open items requiring resolution
 
@@ -180,17 +217,20 @@ recorded in the handover message.
 | --- | --- | --- | --- |
 | 1 | Parent-inbox retention period is not fixed; `/privacy/` says so rather than inventing one | `/privacy/#retention` | **Open — policy decision for the founder** |
 | 2 | Commercial destination returns to HTTPS | `src/data/site.ts` | **Open — depends on the business site's certificate** (`DEPLOYMENT.md` §5) |
-| 3 | Deployment, custom domain and HTTPS enforcement | GitHub Pages settings + DNS | **Open — owner access** (`DEPLOYMENT.md` §6) |
-| 4 | Live post-deployment verification | `DEPLOYMENT.md` §4 | **Open — cannot run from this sandbox** |
-| 5 | Founder visual approval | `verification/screenshots/` | **Open** |
+| 3 | Deployment, custom domain and HTTPS enforcement | GitHub Pages settings + DNS | **Done 2026-11-09** — live, DNS check passing; Enforce HTTPS confirmed by the founder |
+| 4 | Live post-deployment verification | `DEPLOYMENT.md` §4 | **Partly done** — the founder confirmed `/` and `/businesses/` render live; 404, redirects, canonicals and sitemap are unverified from this workspace |
+| 5 | Founder review of the refined pages before merge | `verification/refinement/` | **Open — required before merging this branch** |
 | 6 | Parent mailbox receipt/reply test | `obsidixz@outlook.com` | **Not verified** — out of scope for this environment |
 | 7 | Optional vector (SVG) logo artwork | `public/brand/` | **Optional** — raster artwork is used as supplied |
 
 ## Limits of this verification
 
-- The sandbox cannot reach the Obsidixz domains or the live business sites (egress limited to
-  GitHub, npm, PyPI). DNS, HTTPS, deployment and destination liveness are therefore **unverified**;
-  upstream statuses are quoted from the 2026-11-09 handoff, not re-measured.
+- The sandbox cannot open the Obsidixz domains or the business sites over HTTP/HTTPS (egress is
+  limited to GitHub, npm, PyPI and DNS). **DNS was verified** on 2026-11-10 (apex A + AAAA, `www`
+  CNAME, MX/TXT/NS, business CNAMEs). TLS, redirects, live headers and live HTML remain
+  **unverified from here**; the live render is evidenced only by the founder's screenshots.
+- The Commercial HTTPS switch rests on the founder's live check of 2026-11-10 (HTTPS 200, HTTP
+  redirects). The sandbox could not repeat that check.
 - "Zoom" is a 200% root font-size simulation. Real browser zoom was not automated.
 - Screenshots are implementation evidence. They are not founder approval and do not prove visual
   quality on the founder's own displays.
